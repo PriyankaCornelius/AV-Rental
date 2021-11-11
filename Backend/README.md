@@ -1,2 +1,2 @@
-# CMPE-273--Indeed-Application-Prototype
-Group Project CMPE 273- Indeed Application Prototype
+# CMPE-281--AV-Rental
+Group Project CMPE-281--AV-Rental
