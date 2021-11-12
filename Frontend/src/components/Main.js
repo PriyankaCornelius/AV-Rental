@@ -7,6 +7,7 @@ import Profile from './profile';
 import Pricing from './pricing';
 import SearchCar from './searchCar';
 import AddCar from './addCar';
+import Dashboard from './Dashboard';
 //Create a Main Component
 class Main extends Component {
         state = {
@@ -37,6 +38,9 @@ class Main extends Component {
                     </Route>
                     <Route path="/addCar">
                         <AddCar></AddCar>
+                    </Route>
+                    <Route path="/Dashboard">
+                        <Dashboard></Dashboard>
                     </Route>
                 </Router>
 
