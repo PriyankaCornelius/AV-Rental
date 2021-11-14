@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
+import axios from "axios";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,7 +14,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { Redirect } from "react-router";
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -29,6 +31,9 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Signup() {
+
+  const [idCreated, setidCreated] = useState(0);;
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -40,16 +45,42 @@ export default function Signup() {
     if (carOwner === 'on') persona = "carOwner";
     if (admin === 'on') persona = "admin";
     // eslint-disable-next-line no-console
-    console.log({
+    var data1= {
       firstName: data.get('firstName'),
       lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
       persona:persona
-    });
+    };
+
+    axios
+        .post("http://localhost:5000/signup", data1)
+        .then((response) => {
+            console.log("Status Code signup: ", response.status);
+            if (response.status === 200) {
+                localStorage.setItem('customerEmail', data1.email);
+                localStorage.setItem('persona',persona);
+              setidCreated(true)
+                
+            } else {
+              setidCreated("Email ID already exists")
+            }
+            })
+        .catch((e) => {
+            debugger;
+            console.log("FAIL!!!");
+        });
   };
 
+  if(idCreated){
+    return <Redirect to="/profile" />
+  } else  if (idCreated==="Email ID already exists"){
+    return (
+    <div> Email ID already exists </div>
+  );
+  }
   return (
+    
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
