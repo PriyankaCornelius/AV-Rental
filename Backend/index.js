@@ -4,6 +4,7 @@ import { createConnection } from 'mysql';
 import express from 'express';
 
 import userRouter from './routes/userRoutes';
+import carRouter from  './routes/carRoutes';
 
 dotenv.config();
 var app = express();
@@ -29,5 +30,6 @@ app.listen(process.env.PORT, () => {
 });
 
 app.use('/user', userRouter);
+app.use('/car', carRouter);
 
 export default con;

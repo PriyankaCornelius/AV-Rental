@@ -68,7 +68,7 @@ export const signUp = async(req, res) => {
   };
 
 
-export const signIn = async (req, res) => {
+export const signIn = (req, res) => {
     const {email, pwd} = req.body;
     var sql_findEmail = "SELECT * FROM user where email = ?";
     try{
@@ -125,4 +125,81 @@ export const checkTokenValidation = (req, res) => {
         message: 'Unauthorized User'
       });
     }
+}
+
+export const updateUser = ( req, res) => {
+  try{
+    const { 
+      userId, 
+      email, 
+      pwd, 
+      fname, 
+      lname, 
+      phone, 
+      address, 
+      zip, 
+      country, 
+      walletBalance, 
+      paymentPlan
+    } = req.body;
+
+    const updateQuery = `UPDATE user SET
+      email = ?,
+      fname = ?,
+      lname = ?,
+      phone = ?,
+      address = ?,
+      zip = ?,
+      country = ?,
+      walletBalance = ?,
+      paymentPlan = ? 
+      WHERE userId = ?
+    `;
+
+    const getUserByIdQuery = 'SELECT * FROM user WHERE userId = ?';
+
+    con.query(updateQuery, [email, 
+      fname, 
+      lname, 
+      phone, 
+      address, 
+      zip, 
+      country, 
+      walletBalance, 
+      paymentPlan,
+      userId,
+    ], (err, result1) => {
+      if(err){
+        res.status(500).json({
+          message: 'Internal Server Error'
+        })
+      }
+      else{
+        console.log('Hererere\n', userId);
+        con.query(getUserByIdQuery, [userId], (err, result2)=>{
+          console.log(result2);
+          if(result2[0]){
+            res.status(200).json({
+              success:true,
+              payload: {
+                data: result2[0],
+              }
+            });
+          }
+          else{
+            res.status(500).json({
+              success: false,
+              message: 'User Not Found',
+            });
+          }
+        })
+      }
+    })
+  } 
+  catch(err){
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+    });
+  }
 }
