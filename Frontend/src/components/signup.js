@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from "axios";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -32,7 +32,7 @@ const theme = createTheme();
 
 export default function Signup() {
 
-  const [idCreated, setidCreated] = useState(0);
+  const [idCreated, setidCreated] = useState(0);;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -60,15 +60,10 @@ export default function Signup() {
             if (response.status === 200) {
                 localStorage.setItem('customerEmail', data1.email);
                 localStorage.setItem('persona',persona);
-               
               setidCreated(true)
-              if (idCreated === true)
-              {
-               return <Redirect to='/profile' />
-                }
                 
             } else {
-              setidCreated("Email Id already registered!")
+              setidCreated("Email ID already exists")
             }
             })
         .catch((e) => {
@@ -77,6 +72,13 @@ export default function Signup() {
         });
   };
 
+  if(idCreated){
+    return <Redirect to="/profile" />
+  } else  if (idCreated==="Email ID already exists"){
+    return (
+    <div> Email ID already exists </div>
+  );
+  }
   return (
     
     <ThemeProvider theme={theme}>

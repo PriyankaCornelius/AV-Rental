@@ -56,6 +56,7 @@ app.post("/signup", function (req, res) {
         res.end("SignUp failed");
       }
       else {
+        console.log("zzzzzzz",result[0])
         if (result[0] == null) {
           con.query(sql_insert, [persona,fname,lname, email, customerPassword], function (err, result) {
             if (err) {
