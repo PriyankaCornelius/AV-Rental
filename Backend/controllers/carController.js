@@ -13,7 +13,7 @@ export const addCar = (req, res) => {
             mileage,            
         } = req.body;
 
-        const getCarByIdQuery = 'SELECT * FROM car WHERE cardId = ?';
+        const getCarByIdQuery = 'SELECT * FROM car WHERE carId = ?;';
 
         const carUpdateQuery = `UPDATE car SET
             model = ?,
@@ -24,22 +24,17 @@ export const addCar = (req, res) => {
             WHERE carId = ?
         `;
         const carAddQuery = `INSERT INTO car (
+            carId,
             ownerId, 
             model, 
             type, 
             chargePerDay, 
             available, 
-            mileage) VALUES (
-            ownerId = ?,
-            model = ?,
-            type = ?,
-            chargePerDay = ?,
-            available = ?,
-            mileage = ?
-            );
+            mileage) VALUES (NULL, ?,?,?,?,?,?)
         `;
 
-        const getLastIdQuery = `SELECT SCOPE_IDENTIFY();`;
+        const getLastInerstedIdQuery = `SELECT LAST_INSERT_ID();`;
+
         if(carId){ //Update
             con.query(carUpdateQuery, [
                 model, 
@@ -77,14 +72,20 @@ export const addCar = (req, res) => {
                     sendInternalServerError(res);
                 }
                 else{
-                    console.log('WHHYYY');
-                    con.query(getCarByIdQuery, [carId], (err, result)=>{
-                        console.log('NOPPPPP', result);
-                        if(result[0]){
-                            sendCustomSuccess(res, { data: result[0]});
+                    con.query(getLastInerstedIdQuery, (err, result) => {
+                        if(result){
+                            let id = result[0]['LAST_INSERT_ID()'];
+                            con.query(getCarByIdQuery, [id], (err, result)=>{
+                                if(result[0]){
+                                    sendCustomSuccess(res, { data: result[0]});
+                                }
+                                else{
+                                    sendCustomError(res, 404, 'Entity Not Found');
+                                }
+                            });
                         }
                         else{
-                            sendCustomError(res, 404, 'Entity Not Found');
+                            sendInternalServerError(res);
                         }
                     })
                 }
