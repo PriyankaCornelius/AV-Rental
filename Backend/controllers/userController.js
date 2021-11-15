@@ -2,6 +2,7 @@ import con from "../index";
 import pkg1 from 'bcryptjs';
 const { compare, genSalt, hash: _hash } = pkg1;
 import { createJWT, verifyToken } from "../services/userService";
+import { sendCustomSuccess, sendInternalServerError } from "./common";
 
 export const signUp = async(req, res) => {
     var fname = req.body.firstName;
@@ -199,5 +200,27 @@ export const updateUser = ( req, res) => {
       success: false,
       message: 'Internal Server Error',
     });
+  }
+}
+
+//GET request
+export const getUser = (req, res) => {
+  try{
+    const userId = req.params.userId;
+    console.log(userId);
+
+    const getUserByIdQuery = `SELECT * FROM user WHERE userId = ?`;
+    con.query(getUserByIdQuery, [userId], (err, result)=>{
+      if(err){
+        sendInternalServerError(res);
+      }
+      else{
+        console.log('User Found', result[0]);
+        sendCustomSuccess(res, result[0]);
+      }
+    });  
+  }
+  catch(err){
+    sendInternalServerError(res);
   }
 }

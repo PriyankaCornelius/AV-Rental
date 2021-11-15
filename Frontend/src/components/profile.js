@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -12,45 +12,67 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { AuthContext } from './authenticaion/ProvideAuth';
 import Button from '@mui/material/Button';
-import {updateUserProfile} from '../services/userService';
+import {updateUserProfile, getUserDetails} from '../services/userService';
 import {useHistory} from 'react-router-dom';
 
-export default function Profile() {
+export default function Profile() {  
+  const history = useHistory();
+  const [user, setUser] = useState();
+  const [loading, setLoading] = useState(true);
 
   const authContext = useContext(AuthContext);
-  const {user, loading, setUser, updateLocalStorage} = authContext;
-  const history = useHistory();
-
-  const [userState, setUserState] = useState();
-
-  const updateUserProfile = async () => {
+  const {user: globalUserState } = authContext;
+  console.log(globalUserState, authContext);
+  const [userId, setUserId] = useState(globalUserState.userId)
 
 
+  useEffect(()=>{
+    fetchUserDetails();
+  },[]);
+
+  const fetchUserDetails = async () =>{
+    setLoading(true);
+    
+    const res = await getUserDetails(userId);
+    if(res.status === 200){
+      console.log(res); 
+      setUser(res.data.payload.data);
+      setLoading(false);
+    } 
+    else{
+      console.log('Error Occured');
+    }
+
+  }
+
+  const updateUserData = async () => {
     const obj = {
-    fname : document.getElementById('firstName').value,
-     lname : document.getElementById('lastName').value,
-     email : document.getElementById('email').value,
-     phone : document.getElementById('phoneNumber').value,
-     zip : document.getElementById('zip').value,
-     address : document.getElementById('address1').value,
-     country : document.getElementById('country').value,
-     state : document.getElementById('state').value,
+      userId: user.userId,
+      fname : document.getElementById('firstName').value,
+      lname : document.getElementById('lastName').value,
+      email : document.getElementById('email').value,
+      phone : document.getElementById('phoneNumber').value,
+      zip : document.getElementById('zip').value,
+      address : document.getElementById('address1').value,
+      country : document.getElementById('country').value,
+      state : document.getElementById('state').value,
     }
     console.log(obj); 
+    setUser(obj);
 
     const response = await updateUserProfile(obj);
     console.log(response);
-    // if(response.status === 200){
-    //   console.log(response.data.payload.data[0]);
-    //   setUser(response.data.payload.data[0]);
-    //   updateLocalStorage(response.data.payload.data[0]);
-    //   setTimeout(()=>{
-    //     history.push('/Dashboard');
-    //   }, 500);
-    // } 
-    // else{
-    //   console.log('Error Occuered');
-    // }
+    if(response.status === 200){
+      console.log(response.data.payload.data);
+      setUser(response.data.payload.data);
+      // updateLocalStorage(response.data.payload.data);
+      setTimeout(()=>{
+        history.push('/Dashboard');
+      }, 500);
+    } 
+    else{
+      console.log('Error Occuered');
+    }
 
 
 
@@ -212,7 +234,7 @@ export default function Profile() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={updateUserProfile}
+                onClick={updateUserData}
               >
                 Update Details
               </Button>

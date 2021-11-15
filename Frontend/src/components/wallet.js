@@ -13,8 +13,6 @@ function Wallet(props) {
 
   const authContext = useContext(AuthContext);
   const { user, loading } = authContext;
-  console.log(user);
-//   const { post } = props;
     var post = {
         image: "https://payspacemagazine.com/wp-content/uploads/2018/10/dollar1-1.jpg",
         imageLabel:"img"
@@ -36,7 +34,6 @@ function Wallet(props) {
             </Typography>
             <Typography component="h2" variant="h2">
               {/* {post.title} */}
-              {user.walletBalance}
             </Typography>
             
           </CardContent>

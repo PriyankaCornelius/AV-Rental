@@ -9,11 +9,9 @@ const ProvideAuth = ({ children }) => {
     const [authState, setAuthState] = useState(null);
 
     const getAuthntication = async () => {
-        console.log('Authentication Service');
         const token = window.localStorage.getItem('token');
         const userObj = window.localStorage.getItem('user');
         const user = JSON.parse(userObj);
-        console.log('Inside AUthenticate Service', user);
         if(token){
             setLoading(true);
             const response = await fetch('');

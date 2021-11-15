@@ -111,3 +111,24 @@ export const addRide = (req, res) => {
         sendInternalServerError(res);
     }
 }
+
+
+
+export const getUserRides = (req, res) => {
+    try{
+        const userId = req.query.userId;
+        const filterCarsBasedOnTypeQuery = `SELECT * FROM ride WHERE customerId = ?`;
+        con.query(filterCarsBasedOnTypeQuery, [userId], (err, result) => {
+            if(err){
+                sendInternalServerError(res);
+            }
+            else{
+                console.log(result);
+                sendCustomSuccess(res, result);
+            }
+        });
+    }
+    catch(err){
+        sendInternalServerError(res);
+    }
+}

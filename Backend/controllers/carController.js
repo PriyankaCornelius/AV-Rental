@@ -117,3 +117,22 @@ export const getCarsByType = (req, res) => {
         sendInternalServerError(res);
     }
 }
+
+export const getCarsByOwner = (req, res) => {
+    try{
+        const ownerId = req.query.ownerId;
+        const filterCarsBasedOnTypeQuery = `SELECT * FROM car WHERE ownerId = ?`;
+        con.query(filterCarsBasedOnTypeQuery, [ownerId], (err, result) => {
+            if(err){
+                sendInternalServerError(res);
+            }
+            else{
+                console.log(result);
+                sendCustomSuccess(res, result);
+            }
+        });
+    }
+    catch(err){
+        sendInternalServerError(res);
+    }
+}
