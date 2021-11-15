@@ -1,4 +1,4 @@
-import * as React from 'react';
+import  React, {useContext, useEffect, useState} from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -19,6 +19,9 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Wallet from './wallet';
+import { AuthContext }from '../components/authenticaion/ProvideAuth';
+import { SettingsInputSvideoRounded } from '@mui/icons-material';
+
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
@@ -87,12 +90,19 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function DashboardContent() {
-  const [open, setOpen] = React.useState(true);
+
+  
+  const authContext = useContext(AuthContext);
+  const {user, authState, loading} = authContext;
+  const [open, setOpen] = useState(true);
+  // const [user, setUser] = useState();
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   return (
+    <>
+    {!loading && (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
@@ -201,6 +211,8 @@ function DashboardContent() {
         </Box>
       </Box>
     </ThemeProvider>
+    )}
+    </>
   );
 }
 

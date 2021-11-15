@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useContext} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +12,10 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {signin} from '../services/authenticationService';
+import { AuthContext } from './authenticaion/ProvideAuth';
+import { useHistory } from 'react-router-dom';
+
 
 function Copyright(props) {
   return (
@@ -29,7 +33,16 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignInSide() {
-  const handleSubmit = (event) => {
+
+
+  const authContext = useContext(AuthContext);
+  console.log(authContext);
+
+  const {setUser, setAuthState, updateLocalStorage} = authContext;
+  const history = useHistory();
+
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     var customer = data.get('customer');
@@ -45,6 +58,28 @@ export default function SignInSide() {
       password: data.get('password'),
       persona:persona
     });
+
+    const response = await signin({
+      email: data.get('email'),
+      password: data.get('password'),
+      persona:persona,
+    })
+    console.log(response.data.payload);
+    console.log(response.status);
+    if(response.status === 200){
+      //Needs somes changes....
+      setUser(response.data.payload.data[0]);
+      setAuthState(true);
+      updateLocalStorage(response.data.payload.data[0]); //Need to call after setUser
+      console.log(authContext);
+      setTimeout(()=>{
+        history.push('/Dashboard');
+      }, 500);
+    }
+    else{
+      setAuthState(false);
+      console.log('Error', response);
+    }
   };
 
   return (

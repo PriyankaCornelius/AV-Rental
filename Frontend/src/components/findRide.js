@@ -6,6 +6,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
 export default function FindRide() {
+
+    
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -14,11 +17,21 @@ export default function FindRide() {
       <Grid container spacing={3}>
       <Grid item xs={12}>
           <TextField
-            id="rentalLocation"
-            name="rentalLocation"
-            label="Rental Location"
+            id="source"
+            name="source"
+            label="Source"
             fullWidth
-            autoComplete="Rental Location"
+            autoComplete="Source"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            id="destination"
+            name="destination"
+            label="Car Destination"
+            fullWidth
+            autoComplete="Car Type"
             variant="standard"
           />
         </Grid>

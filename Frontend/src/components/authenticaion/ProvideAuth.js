@@ -9,19 +9,28 @@ const ProvideAuth = ({ children }) => {
     const [authState, setAuthState] = useState(null);
 
     const getAuthntication = async () => {
+        console.log('Authentication Service');
         const token = window.localStorage.getItem('token');
         const userObj = window.localStorage.getItem('user');
         const user = JSON.parse(userObj);
+        console.log('Inside AUthenticate Service', user);
         if(token){
             setLoading(true);
             const response = await fetch('');
             setAuthState(response.state === 200);
             setUser(user);
             setLoading(false);
+             
         }
         else{
             setAuthState(false);
         }
+    }
+
+    const updateLocalStorage = (user, token) => {
+        console.log('Updating Local Storage', token, user);
+        window.localStorage.setItem('token', token);
+        window.localStorage.setItem('user', JSON.stringify(user));
     }
 
     useEffect(()=>{
@@ -30,7 +39,7 @@ const ProvideAuth = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{isAuthenticated: authState, user, setUser, setAuthState}}>
+        <AuthContext.Provider value={{isAuthenticated: authState, loading, user, setUser, setAuthState, updateLocalStorage}}>
             {children}
         </AuthContext.Provider>
     );

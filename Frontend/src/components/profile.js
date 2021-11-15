@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useContext, useState} from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -10,9 +10,55 @@ import Wallet from './wallet';
 import { Col, Row } from 'react-bootstrap';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
+import { AuthContext } from './authenticaion/ProvideAuth';
+import Button from '@mui/material/Button';
+import {updateUserProfile} from '../services/userService';
+import {useHistory} from 'react-router-dom';
+
 export default function Profile() {
+
+  const authContext = useContext(AuthContext);
+  const {user, loading, setUser, updateLocalStorage} = authContext;
+  const history = useHistory();
+
+  const [userState, setUserState] = useState();
+
+  const updateUserProfile = async () => {
+
+
+    const obj = {
+    fname : document.getElementById('firstName').value,
+     lname : document.getElementById('lastName').value,
+     email : document.getElementById('email').value,
+     phone : document.getElementById('phoneNumber').value,
+     zip : document.getElementById('zip').value,
+     address : document.getElementById('address1').value,
+     country : document.getElementById('country').value,
+     state : document.getElementById('state').value,
+    }
+    console.log(obj); 
+
+    const response = await updateUserProfile(obj);
+    console.log(response);
+    // if(response.status === 200){
+    //   console.log(response.data.payload.data[0]);
+    //   setUser(response.data.payload.data[0]);
+    //   updateLocalStorage(response.data.payload.data[0]);
+    //   setTimeout(()=>{
+    //     history.push('/Dashboard');
+    //   }, 500);
+    // } 
+    // else{
+    //   console.log('Error Occuered');
+    // }
+
+
+
+  }
+
   return (
       <React.Fragment>
+        {!loading && (
         <Container component="main" maxWidth="lg" sx={{ mb: 4 }}>
          <Row>   
         <Col>
@@ -45,6 +91,7 @@ export default function Profile() {
             fullWidth
             autoComplete="given-name"
             variant="standard"
+            defaultValue={user.fname}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -56,17 +103,15 @@ export default function Profile() {
             fullWidth
             autoComplete="family-name"
             variant="standard"
+            defaultValue={user.lname}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="phoneNum"
-            name="phoneNum"
-            label="Phone Number"
-            fullWidth
-            autoComplete="phoneNum"
+            id="phoneNumber"
             variant="standard"
+            defaultValue={user.phone}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -78,6 +123,7 @@ export default function Profile() {
             fullWidth
             autoComplete="email"
             variant="standard"
+            defaultValue={user.email}
           />
         </Grid>
         </Grid>
@@ -95,7 +141,9 @@ export default function Profile() {
             fullWidth
             autoComplete="shipping address-line1"
             variant="standard"
+            defaultValue={user.address}
           />
+
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -116,6 +164,7 @@ export default function Profile() {
             fullWidth
             autoComplete="shipping address-level2"
             variant="standard"
+            defaultValue={user.city}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -125,6 +174,7 @@ export default function Profile() {
             label="State/Province/Region"
             fullWidth
             variant="standard"
+            defaultValue={user.state}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -136,6 +186,7 @@ export default function Profile() {
             fullWidth
             autoComplete="shipping postal-code"
             variant="standard"
+            defaultValue={user.zip}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -147,6 +198,7 @@ export default function Profile() {
             fullWidth
             autoComplete="shipping country"
             variant="standard"
+            defaultValue={user.country}
           />
         </Grid>
         <Grid item xs={12}>
@@ -155,9 +207,19 @@ export default function Profile() {
             label="Use this address for payment details"
           />
         </Grid>
+        <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={updateUserProfile}
+              >
+                Update Details
+              </Button>
       </Grid>
       </Col></Row>
       </Container>
+    )}
     </React.Fragment>
   );
 }

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useContext} from 'react';
 import { useState, useEffect } from 'react';
 import axios from "axios";
 import Avatar from '@mui/material/Avatar';
@@ -15,6 +15,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Redirect } from "react-router";
+import {signup} from '../services/authenticationService';
+import { AuthContext } from './authenticaion/ProvideAuth';
+
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -32,9 +36,12 @@ const theme = createTheme();
 
 export default function Signup() {
 
-  const [idCreated, setidCreated] = useState(0);;
+  const [idCreated, setidCreated] = useState(0);
+  const authContext = useContext(AuthContext);
 
-  const handleSubmit = (event) => {
+  const {setUser, setAuthState, updateLocalStorage} = authContext;
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     var customer = data.get('customer');
@@ -50,26 +57,22 @@ export default function Signup() {
       lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
-      persona:persona
+      persona:persona,
     };
 
-    axios
-        .post("http://localhost:5000/signup", data1)
-        .then((response) => {
-            console.log("Status Code signup: ", response.status);
-            if (response.status === 200) {
-                localStorage.setItem('customerEmail', data1.email);
-                localStorage.setItem('persona',persona);
-              setidCreated(true)
-                
-            } else {
-              setidCreated("Email ID already exists")
-            }
-            })
-        .catch((e) => {
-            debugger;
-            console.log("FAIL!!!");
-        });
+
+    const response = await signup(data1);
+    console.log(response.data);
+    console.log(response.status);
+    if(response.status === 200){
+      setUser(response.data);
+      setAuthState(true);
+      updateLocalStorage(response.data); //Need to call after setUser
+    }
+    else{
+      setAuthState(false);
+      console.log('Error', response);
+    }
   };
 
   if(idCreated){

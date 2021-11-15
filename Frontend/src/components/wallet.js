@@ -1,4 +1,4 @@
-import * as React from 'react';
+import  React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -6,14 +6,22 @@ import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import {AuthContext} from '../components/authenticaion/ProvideAuth';
 
 function Wallet(props) {
+
+
+  const authContext = useContext(AuthContext);
+  const { user, loading } = authContext;
+  console.log(user);
 //   const { post } = props;
     var post = {
         image: "https://payspacemagazine.com/wp-content/uploads/2018/10/dollar1-1.jpg",
         imageLabel:"img"
 }
   return (
+    <>
+    {!loading && (
     <Grid item xs={12} md={15}>
       <CardActionArea component="a" href="#">
         <Card sx={{ display: 'flex' }}>
@@ -28,7 +36,7 @@ function Wallet(props) {
             </Typography>
             <Typography component="h2" variant="h2">
               {/* {post.title} */}
-              $4800
+              {user.walletBalance}
             </Typography>
             
           </CardContent>
@@ -41,6 +49,8 @@ function Wallet(props) {
         </Card>
       </CardActionArea>
     </Grid>
+    )}
+    </>
   );
 }
 

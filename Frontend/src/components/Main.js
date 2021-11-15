@@ -8,6 +8,7 @@ import Pricing from './pricing';
 import SearchCar from './searchCar';
 import AddCar from './addCar';
 import Dashboard from './Dashboard';
+import ProvideAuth from './authenticaion/ProvideAuth';
 //Create a Main Component
 class Main extends Component {
         state = {
@@ -17,6 +18,7 @@ class Main extends Component {
         return(
             <div>
                 {/*Render Different Component based on Route*/}
+                <ProvideAuth>
                 <Router>
                     <Route path="/">
                         <NavBar></NavBar>
@@ -43,6 +45,7 @@ class Main extends Component {
                         <Dashboard></Dashboard>
                     </Route>
                 </Router>
+                </ProvideAuth>
 
             </div>
         )
