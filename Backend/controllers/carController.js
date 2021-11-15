@@ -93,9 +93,27 @@ export const addCar = (req, res) => {
         }
     }
     catch(err){
-        res.status(500).json({
-            success: false,
-            message: 'Internal Server Error'
-        });
+        sendInternalServerError(res);
     }
 } 
+
+
+//Get Request
+export const getCarsByType = (req, res) => {
+    try{
+        const type = req.query.type;
+        const filterCarsBasedOnTypeQuery = `SELECT * FROM car WHERE type = ?`;
+        con.query(filterCarsBasedOnTypeQuery, [type], (err, result) => {
+            if(err){
+                sendInternalServerError(res);
+            }
+            else{
+                console.log(result);
+                sendCustomSuccess(res, result);
+            }
+        });
+    }
+    catch(err){
+        sendInternalServerError(res);
+    }
+}

@@ -4,8 +4,6 @@ const { compare, genSalt, hash: _hash } = pkg1;
 import { createJWT, verifyToken } from "../services/userService";
 
 export const signUp = async(req, res) => {
-    console.log("Inside SignUp Request");
-    console.log("Req Body : ", req.body);
     var fname = req.body.firstName;
     var lname = req.body.lastName;
     var email = req.body.email;
