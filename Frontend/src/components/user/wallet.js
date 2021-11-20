@@ -6,7 +6,7 @@ import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import {AuthContext} from '../components/authenticaion/ProvideAuth';
+import {AuthContext} from '../authenticaion/ProvideAuth';
 
 function Wallet(props) {
 

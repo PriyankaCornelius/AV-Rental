@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useContext, useState} from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -12,9 +12,12 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import FindRide from './findRide';
-import ChooseRide from './chooseRide';
-
+import FindSourceAndDestination from '../ride/findSourceAndDestination';
+import ChooseRide from '../ride/chooseRide';
+import RideList from '../ride/RideList';
+import ReviewRide from '../ride/ReviewRide';
+import {bookRide} from '../../services/rideService';
+import { AuthContext } from '../authenticaion/ProvideAuth';
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -30,31 +33,57 @@ function Copyright() {
 
 const steps = ['Find a ride', 'Choose ride', 'Book your ride'];
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <FindRide/>;
-    case 1:
-      return <ChooseRide />;
-    // case 2:
-    //   return <Review />;
-    default:
-      // throw new Error('Unknown step');
-  }
-}
+
 
 const theme = createTheme();
 
 export default function SearchCar() {
-  const [activeStep, setActiveStep] = React.useState(0);
-
-  const handleNext = () => {
+  const [activeStep, setActiveStep] = useState(0);
+  const [ride, setRide] = useState();
+  const [loading, setLoading] = useState();
+  const authContext = useContext(AuthContext);
+  const {user} = authContext;
+  const handleNext = async () => {
+    console.log(ride);
+    console.log(activeStep);
+    console.log(authContext, user);
     setActiveStep(activeStep + 1);
+    if(activeStep == 2){
+      const resp = await bookRide(ride, user);
+      if(resp.status === 200){
+        setLoading(false);
+      }
+      else{
+        console.log('Error Occured', resp.data.payload.message);
+      }
+    }
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return <FindSourceAndDestination 
+                  setRide={setRide}
+                  ride={ride}
+              />;
+      case 1:
+        return <RideList 
+                  setRide={setRide}
+                  ride={ride}
+                />;
+      case 2:
+        return <ReviewRide 
+                  setRide={setRide}
+                  ride={ride}
+                />;
+      default:
+        // throw new Error('Unknown step');
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -68,13 +97,8 @@ export default function SearchCar() {
           borderBottom: (t) => `1px solid ${t.palette.divider}`,
         }}
       >
-        {/* <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            Company name
-          </Typography>
-        </Toolbar> */}
       </AppBar>
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+      <Container component="main" maxWidth="m" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
           <Typography component="h1" variant="h4" align="center">
             Ride Booking
@@ -88,7 +112,9 @@ export default function SearchCar() {
           </Stepper>
           <React.Fragment>
             {activeStep === steps.length ? (
-              <React.Fragment>
+              <>
+              {!loading && (
+                <React.Fragment>
                 <Typography variant="h5" gutterBottom>
                   Thank you for your order.
                 </Typography>
@@ -98,6 +124,9 @@ export default function SearchCar() {
                   shipped.
                 </Typography>
               </React.Fragment>
+              )}
+              </>
+              
             ) : (
               <React.Fragment>
                 {getStepContent(activeStep)}

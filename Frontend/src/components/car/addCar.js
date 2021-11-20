@@ -13,7 +13,7 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CarDetails from './carDetails';
-import UserVerification from './userVerification';
+import UserVerification from '../user/userVerification';
 
 function Copyright() {
   return (

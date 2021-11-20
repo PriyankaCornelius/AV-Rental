@@ -1,16 +1,16 @@
 import React, { useEffect, useState} from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Login from './login';
-import Signup from './signup';
+import Login from './user/login';
+import Signup from './user/signup';
 import NavBar from './NavBar';
-import Profile from './profile';
-import Pricing from './pricing';
-import SearchCar from './searchCar';
-import AddCar from './addCar';
+import Profile from './user/profile';
+import Pricing from './user/pricing';
+import SearchCar from './car/searchCar';
+import AddCar from './car/addCar';
 import Dashboard from './Dashboard';
 import ProvideAuth from './authenticaion/ProvideAuth';
-import CarList from './CarList';
-import RideList from './RideList';
+import CarList from './car/CarList';
+import RideList from './ride/RideList';
 
 
 const Main = () => {
@@ -24,7 +24,6 @@ const Main = () => {
     }, []);
 
     const fetchInitialStateForUser = async () => {
-        console.log('Main Component called');
         const token = window.localStorage.getItem('token');
         const userObj = window.localStorage.getItem('user');
         const user = JSON.parse(userObj);

@@ -101,7 +101,9 @@ export const addCar = (req, res) => {
 //Get Request
 export const getCarsByType = (req, res) => {
     try{
+        
         const type = req.query.type;
+        console.log(type);
         const filterCarsBasedOnTypeQuery = `SELECT * FROM car WHERE type = ?`;
         con.query(filterCarsBasedOnTypeQuery, [type], (err, result) => {
             if(err){

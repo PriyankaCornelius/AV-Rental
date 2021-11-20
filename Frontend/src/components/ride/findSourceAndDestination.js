@@ -1,18 +1,48 @@
-import * as React from 'react';
+import React, {useState}  from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
-export default function FindRide() {
+export default function FindSourceAndDestination(props) {
 
-    
+  
+  const setSource = (e) => {
+    // console.log(e.target.value);
+    const { ride, setRide} = props;
+    setRide(
+      {
+        ...ride,
+        source: e.target.value,
+      }
+    );
+  }
+  const setDestination = (e) => {
+    // console.log(e.target.value);
+    const { ride, setRide} = props;
+    setRide(
+      {
+        ...ride,
+        destination: e.target.value,
+      }
+    );
+  }
+  const setCarType = (e) => {
+    // console.log(e.target.value);
+    const { ride, setRide} = props;
+    setRide(
+      {
+        ...ride,
+        carType: e.target.value,
+      }
+    );
+  }
 
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Find a ride
+        Select Source and Destination
       </Typography>
       <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -23,6 +53,8 @@ export default function FindRide() {
             fullWidth
             autoComplete="Source"
             variant="standard"
+            onChange={(e) => {setSource(e)}}
+            defaultValue={props.ride ? props.ride.source : ''}
           />
         </Grid>
         <Grid item xs={12}>
@@ -33,6 +65,8 @@ export default function FindRide() {
             fullWidth
             autoComplete="Car Type"
             variant="standard"
+            onChange={(e) => {setDestination(e)}}
+            defaultValue={props.ride ? props.ride.destination : ''}
           />
         </Grid>
         <Grid item xs={12}>
@@ -43,6 +77,9 @@ export default function FindRide() {
             fullWidth
             autoComplete="Car Type"
             variant="standard"
+            onChange={(e) => {setCarType(e)}}
+            defaultValue={props.ride ? props.ride.carType : ''}
+            
           />
         </Grid>
         {/* <Grid item xs={12} sm={6}>

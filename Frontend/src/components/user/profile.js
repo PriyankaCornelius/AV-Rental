@@ -10,9 +10,9 @@ import Wallet from './wallet';
 import { Col, Row } from 'react-bootstrap';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import ProvideAuth, { AuthContext } from './authenticaion/ProvideAuth';
+import ProvideAuth, { AuthContext } from '../authenticaion/ProvideAuth';
 import Button from '@mui/material/Button';
-import {updateUserProfile, getUserDetails} from '../services/userService';
+import {updateUserProfile, getUserDetails} from '../../services/userService';
 import {useHistory} from 'react-router-dom';
 
 export default function Profile(props) {  
