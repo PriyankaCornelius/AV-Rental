@@ -10,20 +10,19 @@ import Wallet from './wallet';
 import { Col, Row } from 'react-bootstrap';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import { AuthContext } from './authenticaion/ProvideAuth';
+import ProvideAuth, { AuthContext } from './authenticaion/ProvideAuth';
 import Button from '@mui/material/Button';
 import {updateUserProfile, getUserDetails} from '../services/userService';
 import {useHistory} from 'react-router-dom';
 
-export default function Profile() {  
+export default function Profile(props) {  
   const history = useHistory();
-  const [user, setUser] = useState();
+  
   const [loading, setLoading] = useState(true);
 
   const authContext = useContext(AuthContext);
-  const {user: globalUserState } = authContext;
-  console.log(globalUserState, authContext);
-  const [userId, setUserId] = useState(globalUserState.userId)
+  const [userId, setUserId] = useState(authContext.user.userId);
+  const [user, setUser] = useState();
 
 
   useEffect(()=>{
@@ -35,8 +34,7 @@ export default function Profile() {
     
     const res = await getUserDetails(userId);
     if(res.status === 200){
-      console.log(res); 
-      setUser(res.data.payload.data);
+      setUser(res.data.payload);
       setLoading(false);
     } 
     else{
@@ -48,24 +46,37 @@ export default function Profile() {
   const updateUserData = async () => {
     const obj = {
       userId: user.userId,
-      fname : document.getElementById('firstName').value,
-      lname : document.getElementById('lastName').value,
-      email : document.getElementById('email').value,
-      phone : document.getElementById('phoneNumber').value,
-      zip : document.getElementById('zip').value,
-      address : document.getElementById('address1').value,
-      country : document.getElementById('country').value,
-      state : document.getElementById('state').value,
+      fname : document.getElementById('firstName').value === '' ?  
+        user.fname : 
+        document.getElementById('firstName').value,
+      lname : document.getElementById('lastName').value === '' ? 
+        user.lname :
+        document.getElementById('lastName').value,
+      email : document.getElementById('email').value === '' ? 
+        user.email :
+        document.getElementById('email').value,
+      phone : document.getElementById('phoneNumber').value === ''?
+        user.phone :
+        document.getElementById('phoneNumber').value,
+      zip : document.getElementById('zip').value === '' ? 
+        user.zip :
+        document.getElementById('zip').value,
+      address : document.getElementById('address1').value === '' ?
+        user.address :
+        document.getElementById('address1').value,
+      country : document.getElementById('country').value === '' ? 
+        user.country :
+        document.getElementById('country').value,
+      state : document.getElementById('state').value === '' ?  
+        user.state :
+        document.getElementById('state').value,
+      walletBalance: 890,
     }
-    console.log(obj); 
     setUser(obj);
 
     const response = await updateUserProfile(obj);
-    console.log(response);
     if(response.status === 200){
-      console.log(response.data.payload.data);
       setUser(response.data.payload.data);
-      // updateLocalStorage(response.data.payload.data);
       setTimeout(()=>{
         history.push('/Dashboard');
       }, 500);

@@ -36,7 +36,6 @@ export default function SignInSide() {
 
 
   const authContext = useContext(AuthContext);
-  console.log(authContext);
 
   const {setUser, setAuthState, updateLocalStorage} = authContext;
   const history = useHistory();
@@ -53,25 +52,15 @@ export default function SignInSide() {
     if (carOwner === 'on') persona = "carOwner";
     if (admin === 'on') persona = "admin";
     // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      persona:persona
-    });
 
     const response = await signin({
       email: data.get('email'),
       password: data.get('password'),
-      persona:persona,
+      persona:'customer',
     })
-    console.log(response.data.payload);
-    console.log(response.status);
     if(response.status === 200){
-      //Needs somes changes....
       setUser(response.data.payload.data[0]);
       setAuthState(true);
-      updateLocalStorage(response.data.payload.data[0]); //Need to call after setUser
-      console.log(authContext);
       setTimeout(()=>{
         history.push('/Dashboard');
       }, 500);

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useEffect, useState} from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Login from './login';
 import Signup from './signup';
@@ -9,16 +9,48 @@ import SearchCar from './searchCar';
 import AddCar from './addCar';
 import Dashboard from './Dashboard';
 import ProvideAuth from './authenticaion/ProvideAuth';
-//Create a Main Component
-class Main extends Component {
-        state = {
-                cart:[1,2,3]
+import CarList from './CarList';
+import RideList from './RideList';
+
+
+const Main = () => {
+    const [user, setUser] = useState();
+    const [loading, setLoading] = useState(true);
+    const [authState, setAuthState] = useState(false);
+    const [token, setToken] = useState();
+
+    useEffect(()=>{
+        fetchInitialStateForUser();
+    }, []);
+
+    const fetchInitialStateForUser = async () => {
+        console.log('Main Component called');
+        const token = window.localStorage.getItem('token');
+        const userObj = window.localStorage.getItem('user');
+        const user = JSON.parse(userObj);
+        if(token){
+            setLoading(true);
+            const response = await fetch(`http://localhost:5000/user/verifyToken/${token}`);
+            if(response.state === 200){
+                setAuthState(response.state === 200);
+                setUser(user);
+                setToken(token);
+                setLoading(false);
+            }
+            else{
+                setAuthState(false);
+                setLoading(false);
+            }
         }
-    render(){
-        return(
-            <div>
-                {/*Render Different Component based on Route*/}
-                <ProvideAuth>
+        else{
+            setAuthState(false);
+            setLoading(false);
+        }
+    }
+    return(
+        <div>
+            {!loading && (
+                <ProvideAuth value={{user, authState, token}}>
                 <Router>
                     <Route path="/">
                         <NavBar></NavBar>
@@ -44,12 +76,18 @@ class Main extends Component {
                     <Route path="/Dashboard">
                         <Dashboard></Dashboard>
                     </Route>
+                    <Route path="/CarList">
+                        <CarList/>
+                    </Route>
+                    <Route path="/RideList">
+                        <RideList/>
+                    </Route>
                 </Router>
                 </ProvideAuth>
-
+            )
+            }
             </div>
-        )
-    }
+    );
 }
-//Export The Main Component
+
 export default Main;

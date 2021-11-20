@@ -39,7 +39,7 @@ function getStepContent(step) {
     // case 2:
     //   return <Review />;
     default:
-      throw new Error('Unknown step');
+      // throw new Error('Unknown step');
   }
 }
 
@@ -93,9 +93,7 @@ export default function AddCar() {
                   Thank you for your order.
                 </Typography>
                 <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your order
-                  confirmation, and will send you an update when your order has
-                  shipped.
+                  Your Car with number 8AMF954 has been booked into the system. You can watch the details of trips in Rides Section
                 </Typography>
               </React.Fragment>
             ) : (
@@ -113,7 +111,7 @@ export default function AddCar() {
                     onClick={handleNext}
                     sx={{ mt: 3, ml: 1 }}
                   >
-                    {activeStep === steps.length - 1 ? 'Book ride' : 'Next'}
+                    {activeStep === steps.length - 1 ? 'Add Asset' : 'Next'}
                   </Button>
                 </Box>
               </React.Fragment>

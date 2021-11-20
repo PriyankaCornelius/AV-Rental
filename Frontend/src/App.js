@@ -10,15 +10,6 @@ class App extends React.Component {
     this.state = { apiResponse: "" };
   }
 
-  callAPI() {
-    fetch('http://localhost:5000')
-      .then(res => res.text())
-      .then(res => this.setState({ apiResponse: res }));
-  }
-
-  componentWillMount() {
-    this.callAPI();
-  }
   render() {
     return (
       <div className="App">

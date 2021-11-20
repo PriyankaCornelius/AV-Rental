@@ -14,9 +14,9 @@ export default function CarDetails() {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
-            id="carType"
-            name="carType"
-            label="Car Type"
+            id="carNumber"
+            name="carNumber"
+            label="Car Number"
             fullWidth
             autoComplete="Car Type"
             variant="standard"

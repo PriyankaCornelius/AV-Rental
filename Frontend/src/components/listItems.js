@@ -32,17 +32,23 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Payment Plan" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component={Link} to='/RideList'>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText primary="Past Rides" />
+      <ListItemText primary="Your Rides" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
       <ListItemText primary="Integrations" />
+    </ListItem>
+    <ListItem button component={Link} to='/AddCar'>
+      <ListItemIcon>
+        <LayersIcon />
+      </ListItemIcon>
+      <ListItemText primary="Add a Car" />
     </ListItem>
   </div>
 );

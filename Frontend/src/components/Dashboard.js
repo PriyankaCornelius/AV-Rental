@@ -21,6 +21,9 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Wallet from './wallet';
 import { AuthContext }from '../components/authenticaion/ProvideAuth';
 import { SettingsInputSvideoRounded } from '@mui/icons-material';
+import Button from '@mui/material/Button';
+import {useHistory} from 'react-router-dom';
+
 
 // import Chart from './Chart';
 // import Deposits from './Deposits';
@@ -92,6 +95,7 @@ const mdTheme = createTheme();
 function DashboardContent() {
 
   
+  const history = useHistory();
   const authContext = useContext(AuthContext);
   const {user, authState, loading} = authContext;
   const [open, setOpen] = useState(true);
@@ -99,6 +103,11 @@ function DashboardContent() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+
+  const redirectToAddCar = () => {
+    history.push('./searchCar');
+  }
 
   return (
     <>
@@ -184,6 +193,9 @@ function DashboardContent() {
                   }}
                 >
                   {/* <Chart /> */}
+                  <Button onClick={()=>{redirectToAddCar()}} variant="contained" disableElevation>
+                    Book a Ride
+                  </Button>
                 </Paper>
               </Grid>
               {/* Recent Deposits */}

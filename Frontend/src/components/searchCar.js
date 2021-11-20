@@ -39,7 +39,7 @@ function getStepContent(step) {
     // case 2:
     //   return <Review />;
     default:
-      throw new Error('Unknown step');
+      // throw new Error('Unknown step');
   }
 }
 

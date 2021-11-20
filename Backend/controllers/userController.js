@@ -32,7 +32,6 @@ export const signUp = async(req, res) => {
           });
         }
         else {
-          console.log("zzzzzzz",result[0])
           if (result[0] == null) {
             con.query(sql_insert, [persona,fname,lname, email, customerPassword], function (err, result) {
               if (err) {
@@ -75,6 +74,7 @@ export const signIn = (req, res) => {
         if(result[0]){
           const { userId } = result[0];
           const accessToken = createJWT(email, result[0].userId, 3600);
+          console.log('Access Token', accessToken);
           const tokenVerified = verifyToken(accessToken);
           if(tokenVerified){
             res.status(200).json({
