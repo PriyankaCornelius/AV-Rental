@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FindSourceAndDestination from '../ride/findSourceAndDestination';
 import ChooseRide from '../ride/chooseRide';
-import RideList from '../ride/RideList';
+import RideList from './CarList';
 import ReviewRide from '../ride/ReviewRide';
 import {bookRide} from '../../services/rideService';
 import { AuthContext } from '../authenticaion/ProvideAuth';

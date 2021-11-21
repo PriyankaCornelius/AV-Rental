@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {signin} from '../../services/authenticationService';
 import { AuthContext } from '../authenticaion/ProvideAuth';
 import { useHistory } from 'react-router-dom';
+import Radio from '@mui/material/Radio';
 
 
 function Copyright(props) {
@@ -56,7 +57,7 @@ export default function SignInSide() {
     const response = await signin({
       email: data.get('email'),
       password: data.get('password'),
-      persona:'customer',
+      persona:data.get('persona'),
     })
     if(response.status === 200){
       setUser(response.data.payload.data[0]);
@@ -109,24 +110,28 @@ export default function SignInSide() {
 
             <br></br>
             <Grid item xs={12}>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="customer" id="customer"/>
+                  {/* <div class="form-check form-check-inline">
+                    <input onChange={handlPersona} value="customer" class="form-check-input" type="radio" name="customer" id="customer"/>
                     <label class="form-check-label" for="customer">
                     Customer
                     </label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="carOwner" id="carOwner"/>
+                    <input onChange={handlPersona} value="customer" class="form-check-input" type="radio" name="carOwner" id="carOwner"/>
                     <label class="form-check-label" for="carOwner">
                     Car Owner
                     </label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="admin" id="admin"/>
+                    <input onChange={handlPersona} value="customer" class="form-check-input" type="radio" name="admin" id="admin"/>
                     <label class="form-check-label" for="admin">
                     Admin
                     </label>
-                  </div>
+                  </div> */}
+                  {/* <Radio value={'customer'} checked={row.carId === props.ride.carId} onChange={selectCar}>Customer</Radio>
+                  <Radio value={JSON.stringify(row)} checked={row.carId === props.ride.carId} onChange={selectCar}>Owner</Radio>
+                  <Radio value={JSON.stringify(row)} checked={row.carId === props.ride.carId} onChange={selectCar}>Admin</Radio> */}
+                  
               </Grid>
               <br></br>
 

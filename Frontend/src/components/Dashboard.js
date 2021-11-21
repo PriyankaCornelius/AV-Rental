@@ -23,11 +23,9 @@ import { AuthContext }from './authenticaion/ProvideAuth';
 import { SettingsInputSvideoRounded } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import {useHistory} from 'react-router-dom';
+import { fechInProgressRides } from '../services/rideService';
+import InProgressRideList from './ride/InProgressRideList';
 
-
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
 
 function Copyright(props) {
   return (
@@ -92,12 +90,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+const DashboardContent = () => {
 
-  
+  console.log('Dashboard Called');
   const history = useHistory();
   const authContext = useContext(AuthContext);
-  const {user, authState, loading} = authContext;
+  const {user, authState} = authContext;
+  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(true);
   // const [user, setUser] = useState();
   const toggleDrawer = () => {
@@ -108,10 +107,10 @@ function DashboardContent() {
   const redirectToAddCar = () => {
     history.push('./searchCar');
   }
-
+  
   return (
     <>
-    {!loading && (
+    {(
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
@@ -214,7 +213,7 @@ function DashboardContent() {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  {/* <Orders /> */}
+                  <InProgressRideList/>
                 </Paper>
               </Grid>
             </Grid>

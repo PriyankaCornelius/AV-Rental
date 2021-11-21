@@ -10,9 +10,10 @@ export const addRide = (req, res) => {
             source, 
             destination, 
             rideDate, 
-            charges, 
+            chargePerDay: charges, 
             status,            
         } = req.body;
+        console.log('Request Body', req.body);
 
         const getRideByIdQuery = 'SELECT * FROM ride WHERE rideId = ?;';
 
@@ -68,7 +69,6 @@ export const addRide = (req, res) => {
         else{ //Add New
             console.log('Adding ride');
             con.query(rideAddQuery, [
-                rideId,
                 carId,
                 customerId, 
                 source, 
@@ -90,7 +90,6 @@ export const addRide = (req, res) => {
                             let id = result[0]['LAST_INSERT_ID()'];
                             con.query(getRideByIdQuery, [id], (err, result)=>{
                                 if(result[0]){
-                                    console.log('YESYESYEYS', result[0]);
                                     sendCustomSuccess(res, { data: result[0]});
                                 }
                                 else{
@@ -114,21 +113,76 @@ export const addRide = (req, res) => {
 
 
 
-export const getUserRides = (req, res) => {
+// export const getUserRides = (req, res) => {
+//     try{
+//         const userId = req.query.userId;
+//         const filterRidesBasedOnTypeQuery = `SELECT * FROM ride WHERE customerId = ?`;
+//         con.query(filterRidesBasedOnTypeQuery, [userId], (err, result) => {
+//             if(err){
+//                 sendInternalServerError(res);
+//             }
+//             else{
+//                 console.log(result);
+//                 sendCustomSuccess(res, result);
+//             }
+//         });
+//     }
+//     catch(err){
+//         sendInternalServerError(res);
+//     }
+// }
+
+export const getInProgressRide = (req, res) => {
     try{
         const userId = req.query.userId;
-        const filterCarsBasedOnTypeQuery = `SELECT * FROM ride WHERE customerId = ?`;
-        con.query(filterCarsBasedOnTypeQuery, [userId], (err, result) => {
+        const inProgressRidesQuery = `select carId, rideId, source, destination, status, customerId, 
+                from ride INNER JOIN car on car.carId = ride.carId 
+                where customerId = ? and status = 'In-Progress';`;
+        con.query(inProgressRidesQuery, [userId], (err, result)=>{
             if(err){
                 sendInternalServerError(res);
             }
             else{
-                console.log(result);
-                sendCustomSuccess(res, result);
+                console.log('In Progress Rides', result);
+                sendCustomSuccess(res, result); 
             }
-        });
+        })
     }
-    catch(err){
-        sendInternalServerError(res);
+    catch(e){
+        sendInternalServerError(e);
+    }
+}
+
+export const getUserRides = (req, res) => {
+    try{
+        const userId = req.query.userId;
+        const persona = req.query.persona;
+        console.log(persona);
+        let query;
+        if(persona === 'owner'){
+            query = `select ride.carId, rideId, source, destination, status, customerId
+            from ride INNER JOIN car on car.carId = ride.carId 
+            where car.ownerId = ?`;
+        }
+        else if(persona === 'customer'){
+            query = `select ride.carId, rideId, source, destination, status, customerId
+                from ride INNER JOIN car on car.carId = ride.carId 
+                where customerId = ?`;
+        }
+
+        con.query(query, [userId], (err, result)=>{
+            if(err){
+                console.log(err);
+                sendInternalServerError(res);
+            }
+            else{
+                console.log('In Progress Rides', result);
+                sendCustomSuccess(res, result); 
+            }
+        })
+    }
+    catch(e){
+        console.log('Here');
+        sendInternalServerError(e);
     }
 }

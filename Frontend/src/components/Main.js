@@ -1,5 +1,5 @@
-import React, { useEffect, useState} from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import React, { useEffect, useImperativeHandle, useState} from 'react';
+import { BrowserRouter as Router, Route , useHistory} from 'react-router-dom';
 import Login from './user/login';
 import Signup from './user/signup';
 import NavBar from './NavBar';
@@ -9,9 +9,8 @@ import SearchCar from './car/searchCar';
 import AddCar from './car/addCar';
 import Dashboard from './Dashboard';
 import ProvideAuth from './authenticaion/ProvideAuth';
-import CarList from './car/CarList';
+import CarList from './car/CarList2';
 import RideList from './ride/RideList';
-
 
 const Main = () => {
     const [user, setUser] = useState();
@@ -19,6 +18,7 @@ const Main = () => {
     const [authState, setAuthState] = useState(false);
     const [token, setToken] = useState();
 
+    const history = useHistory();
     useEffect(()=>{
         fetchInitialStateForUser();
     }, []);
@@ -37,11 +37,13 @@ const Main = () => {
                 setLoading(false);
             }
             else{
+                // history.push('/login');
                 setAuthState(false);
                 setLoading(false);
             }
         }
         else{
+            // history.push('/login');
             setAuthState(false);
             setLoading(false);
         }

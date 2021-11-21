@@ -1,9 +1,11 @@
 import express from 'express';
-import { addRide, getUserRides } from '../controllers/rideController';
+import { addRide, getInProgressRide, getUserRides } from '../controllers/rideController';
 
 const router = express.Router();
 
 router.post('/addRide', addRide);
-router.get('/userRides/:userId', getUserRides);
+router.get('/userRides', getUserRides);
+router.get('/inProgress', getInProgressRide);
+
 
 export default router;

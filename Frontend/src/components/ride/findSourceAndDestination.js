@@ -4,6 +4,8 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 export default function FindSourceAndDestination(props) {
 
@@ -70,18 +72,19 @@ export default function FindSourceAndDestination(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
-            id="carType"
-            name="carType"
-            label="Car Type"
-            fullWidth
-            autoComplete="Car Type"
-            variant="standard"
-            onChange={(e) => {setCarType(e)}}
-            defaultValue={props.ride ? props.ride.carType : ''}
-            
-          />
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={props.ride ? props.ride.carType : ''}
+          label="Car Type"
+          onChange={setCarType}
+        
+        >
+          <MenuItem value={'Sedan'}>Sedan</MenuItem>
+          <MenuItem value={'Hatchback'}>Hatchback</MenuItem>
+          </Select>
         </Grid>
+        
         {/* <Grid item xs={12} sm={6}>
           <TextField
             required
