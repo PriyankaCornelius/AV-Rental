@@ -58,15 +58,15 @@ export default function RideList(props) {
         if(resp.status === 200){
         console.log(resp.data.payload);
         const rows = [];
-        resp.data.payload.forEach(el => {
-            const { carId, ownerId, type, model, chargePerDay, mileage} = el;
+        resp.data.payload.forEach(el=> {
+            const { carId, rideId, source, destination, status, charges: chargePerDay} = el;
             rows.push({
-            carId,
-            ownerId, 
-            type, 
-            model,
-            chargePerDay, 
-            mileage,
+                carId,
+                rideId, 
+                source, 
+                destination,
+                status, 
+                chargePerDay,
             })
         });
         setRideList(rows);

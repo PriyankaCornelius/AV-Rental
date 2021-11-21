@@ -162,7 +162,7 @@ const DashboardContent = () => {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List>{mainListItems}</List>
+          <List>{mainListItems(user.persona)}</List>
           <Divider />
           <List>{secondaryListItems}</List>
         </Drawer>

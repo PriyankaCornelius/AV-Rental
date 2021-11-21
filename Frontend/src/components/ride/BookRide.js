@@ -12,10 +12,10 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import FindSourceAndDestination from '../ride/findSourceAndDestination';
-import ChooseRide from '../ride/chooseRide';
-import RideList from './CarList';
-import ReviewRide from '../ride/ReviewRide';
+import FindSourceAndDestination from './findSourceAndDestination';
+import ChooseRide from './chooseRide';
+import RideList from '../car/CarList';
+import ReviewRide from './ReviewRide';
 import {bookRide} from '../../services/rideService';
 import { AuthContext } from '../authenticaion/ProvideAuth';
 function Copyright() {
@@ -37,7 +37,7 @@ const steps = ['Find a ride', 'Choose ride', 'Book your ride'];
 
 const theme = createTheme();
 
-export default function SearchCar() {
+export default function BookRide() {
   const [activeStep, setActiveStep] = useState(0);
   const [ride, setRide] = useState();
   const [loading, setLoading] = useState();

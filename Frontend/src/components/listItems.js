@@ -12,7 +12,9 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import { Redirect } from 'react-router-dom';
 import ListItemButton from '@mui/material/ListItemButton';
 import { Link } from "react-router-dom";
-export const mainListItems = (
+export const mainListItems = (persona) => {
+  
+return(
   <div>
     <ListItem button>
       <ListItemIcon>
@@ -44,14 +46,25 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Integrations" />
     </ListItem>
-    <ListItem button component={Link} to='/AddCar'>
+    {persona === 'owner' && (
+      <ListItem button component={Link} to='/AddCar'>
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
       <ListItemText primary="Add a Car" />
     </ListItem>
+    )}
+    {persona === 'owner' && (
+      <ListItem button component={Link} to='/CarList'>
+      <ListItemIcon>
+        <LayersIcon />
+      </ListItemIcon>
+      <ListItemText primary="View Assets" />
+    </ListItem>
+    )}
+
   </div>
-);
+)};
 
 export const secondaryListItems = (
   <div>

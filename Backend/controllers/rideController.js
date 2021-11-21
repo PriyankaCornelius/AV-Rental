@@ -135,7 +135,7 @@ export const addRide = (req, res) => {
 export const getInProgressRide = (req, res) => {
     try{
         const userId = req.query.userId;
-        const inProgressRidesQuery = `select carId, rideId, source, destination, status, customerId, 
+        const inProgressRidesQuery = `select ride.carId, rideId, source, destination, status, customerId 
                 from ride INNER JOIN car on car.carId = ride.carId 
                 where customerId = ? and status = 'In-Progress';`;
         con.query(inProgressRidesQuery, [userId], (err, result)=>{
@@ -160,12 +160,14 @@ export const getUserRides = (req, res) => {
         console.log(persona);
         let query;
         if(persona === 'owner'){
-            query = `select ride.carId, rideId, source, destination, status, customerId
+            console.log(persona);
+            query = `select ride.carId, rideId, source, destination, status, customerId, charges
             from ride INNER JOIN car on car.carId = ride.carId 
             where car.ownerId = ?`;
         }
         else if(persona === 'customer'){
-            query = `select ride.carId, rideId, source, destination, status, customerId
+            console.log(persona);
+            query = `select ride.carId, rideId, source, destination, status, customerId, charges
                 from ride INNER JOIN car on car.carId = ride.carId 
                 where customerId = ?`;
         }

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useContext, useState} from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -12,8 +12,10 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CarDetails from './carDetails';
-import UserVerification from '../user/userVerification';
+import CarDetails from './CarDetails';
+import ReviewCar from './ReviewCar';
+import { addCar } from '../../services/carService';
+import { AuthContext } from '../authenticaion/ProvideAuth';
 
 function Copyright() {
   return (
@@ -28,28 +30,46 @@ function Copyright() {
   );
 }
 
-const steps = ['Add car details', 'User Verification', 'Review and Add car'];
+const steps = ['Add car details', 'Review and Add car'];
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <CarDetails/>;
-    case 1:
-      return <UserVerification/>;
-    // case 2:
-    //   return <Review />;
-    default:
-      // throw new Error('Unknown step');
-  }
-}
+
 
 const theme = createTheme();
 
-export default function AddCar() {
-  const [activeStep, setActiveStep] = React.useState(0);
+const AddCar = () => {
 
-  const handleNext = () => {
+  const [activeStep, setActiveStep] = useState(0);
+  const [car, setCar] = useState();
+  const [loading, setLoading] = useState();
+  const authContext = useContext(AuthContext);
+
+  const {user} = authContext;
+
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return <CarDetails car={car} setCar={setCar}/>;
+      // case 1:
+        // return <UserVerification car={car} setCar={setCar}/>;
+      case 1:
+        return <ReviewCar car={car} setCar={setCar}/>;
+      default:
+        // throw new Error('Unknown step');
+    }
+  }
+
+  const handleNext = async () => {
+    setLoading(true);
     setActiveStep(activeStep + 1);
+    if(activeStep == 1){
+      const resp = await addCar(car, user);
+      if(resp.status === 200){
+        setLoading(false);
+      }
+      else{
+        console.log('Error Occured', resp.data.payload.message);
+      }
+    }
   };
 
   const handleBack = () => {
@@ -88,6 +108,8 @@ export default function AddCar() {
           </Stepper>
           <React.Fragment>
             {activeStep === steps.length ? (
+              <>
+              {!loading && (
               <React.Fragment>
                 <Typography variant="h5" gutterBottom>
                   Thank you for your order.
@@ -96,6 +118,8 @@ export default function AddCar() {
                   Your Car with number 8AMF954 has been booked into the system. You can watch the details of trips in Rides Section
                 </Typography>
               </React.Fragment>
+              )}
+              </>
             ) : (
               <React.Fragment>
                 {getStepContent(activeStep)}
@@ -123,3 +147,5 @@ export default function AddCar() {
     </ThemeProvider>
   );
 }
+
+export default AddCar;

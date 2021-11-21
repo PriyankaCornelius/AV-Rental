@@ -1,15 +1,15 @@
-import React, { useEffect, useImperativeHandle, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import { BrowserRouter as Router, Route , useHistory} from 'react-router-dom';
 import Login from './user/login';
 import Signup from './user/signup';
 import NavBar from './NavBar';
 import Profile from './user/profile';
 import Pricing from './user/pricing';
-import SearchCar from './car/searchCar';
-import AddCar from './car/addCar';
+import SearchCar from './ride/BookRide';
+import AddCar from './car/AddCar';
 import Dashboard from './Dashboard';
 import ProvideAuth from './authenticaion/ProvideAuth';
-import CarList from './car/CarList2';
+import CarList from './car/CarList';
 import RideList from './ride/RideList';
 
 const Main = () => {
@@ -72,13 +72,13 @@ const Main = () => {
                         <SearchCar></SearchCar>
                     </Route>
                     <Route path="/addCar">
-                        <AddCar></AddCar>
+                            <AddCar></AddCar>
                     </Route>
                     <Route path="/Dashboard">
                         <Dashboard></Dashboard>
                     </Route>
                     <Route path="/CarList">
-                        <CarList/>
+                        <CarList persona={'owner'}/>
                     </Route>
                     <Route path="/RideList">
                         <RideList/>

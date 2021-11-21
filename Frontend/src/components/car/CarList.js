@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,8 +6,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {fetchCarListFromDB} from '../../services/carService';
+import {fetchCarListFromDB, fetchCarListFromDBForOwner} from '../../services/carService';
 import Radio from '@mui/material/Radio';
+import { AuthContext } from '../authenticaion/ProvideAuth';
 
 function createData(rideNumber, carNumber, date,  charge) {
   return { rideNumber, carNumber, charge, date };
@@ -30,11 +31,19 @@ const rows = [
 
 export default function CarList(props) {
 
+  const authContext = useContext(AuthContext);
   const [carList, setCarList] = useState();
   const [loading, setLoading] = useState(true);
   console.log(props); 
   useEffect(() => {
-    fetchCarList(props.ride.carType);
+    if(props.persona === 'owner'){
+      const {user} = authContext;
+      const {userId} = user;
+      fetchCarListForOwner(userId);
+    }
+    else{
+      fetchCarListForCustomer(props.ride.carType);
+    }
   }, [])
 
   const selectCar = (e) =>{
@@ -49,8 +58,34 @@ export default function CarList(props) {
     })
   }
 
-  const fetchCarList = async (type) => {
+  const fetchCarListForCustomer = async (type) => {
     const resp = await fetchCarListFromDB(type);
+    console.log(resp);
+    if(resp.status === 200){
+      console.log(resp.data.payload);
+      const rows = [];
+      resp.data.payload.forEach(el => {
+        const { carId, ownerId, type, model, chargePerDay, mileage} = el;
+        rows.push({
+          carId,
+          ownerId, 
+          type, 
+          model,
+          chargePerDay, 
+          mileage,
+        })
+      });
+      setCarList(rows);
+
+      setLoading(false);
+    }
+    else{
+      console.log(resp.data.message);
+    }
+
+  }
+  const fetchCarListForOwner = async (id) => {
+    const resp = await fetchCarListFromDBForOwner(id);
     console.log(resp);
     if(resp.status === 200){
       console.log(resp.data.payload);
@@ -97,7 +132,9 @@ export default function CarList(props) {
               key={row.carId}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
+              {props.ride && (
               <Radio value={JSON.stringify(row)} checked={row.carId === props.ride.carId} onChange={selectCar}/>
+              )}
               <TableCell component="th" scope="row">
                 {row.type}
               </TableCell>
