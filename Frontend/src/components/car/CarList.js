@@ -48,12 +48,13 @@ export default function CarList(props) {
   }, [])
 
   const selectCar = (e) =>{
-    const {carNumber,model, chargePerDay } = JSON.parse(e.target.value);
+    const {carId, carNumber, model, chargePerDay } = JSON.parse(e.target.value);
     const {setRide, ride} = props;
     setRide({
       ...ride,
-      carNumber,
+      carId,
       model, 
+      carNumber, 
       chargePerDay,
     })
   }
@@ -118,7 +119,10 @@ export default function CarList(props) {
         <TableHead>
           <TableRow>
             {props.ride ? (
-            <TableCell>Select</TableCell>
+              <>
+              <TableCell>Select</TableCell>
+              <TableCell >Car Number</TableCell>
+              </>
             ) : (
             <TableCell >Car Number</TableCell>
             )}
@@ -131,14 +135,17 @@ export default function CarList(props) {
         </TableHead>
         <TableBody>
           {carList.map((row) => {
-            console.log('ROW', row);
+            // console.log('ROW', row);
             return(
             <TableRow
               key={row.carNumber}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               {props.ride ? (
-              <Radio value={JSON.stringify(row)} checked={row.carNumber === props.ride.carNumber} onChange={selectCar}/>
+                <>
+                <Radio value={JSON.stringify(row)} checked={row.carId === props.ride.carId} onChange={selectCar}/>
+                <TableCell align="right">{row.carNumber}</TableCell>
+                </>
               ): (
                 <TableCell align="right">{row.carNumber}</TableCell>
 

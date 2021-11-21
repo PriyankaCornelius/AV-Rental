@@ -28,7 +28,7 @@ export const signUp = async(req, res) => {
           });
         }
         else {
-          if (result[0] == null) {
+          if (result && result[0] == null) {
             con.query(sql_insert, [persona,fname,lname, email, customerPassword], function (err, result) {
               if (err) {
                 res.status(205).json({

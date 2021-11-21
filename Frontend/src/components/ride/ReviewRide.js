@@ -58,7 +58,7 @@ const ReviewRide = (props) => {
                     <TableCell component="th" scope="ride">
                         Number
                     </TableCell>
-                    <TableCell align="right">{ride.carId}</TableCell>
+                    <TableCell align="right">{ride.carNumber}</TableCell>
                 </TableRow>
                 <TableRow
                     key={ride.model}

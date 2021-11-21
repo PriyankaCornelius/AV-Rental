@@ -17,6 +17,7 @@ export const bookRide = async (ride, user) => {
         customerId: user.userId,
         rideDate: date,
     }
+    console.log(payload);
     const options = {
         method: 'POST',
         headers:  {'Content-Type': 'application/json' },
