@@ -115,7 +115,7 @@ const AddCar = () => {
                   Thank you for your order.
                 </Typography>
                 <Typography variant="subtitle1">
-                  Your Car with number 8AMF954 has been booked into the system. You can watch the details of trips in Rides Section
+                  Your Car with number {car.carId} has been booked into the system. You can watch the details of trips in Rides Section
                 </Typography>
               </React.Fragment>
               )}

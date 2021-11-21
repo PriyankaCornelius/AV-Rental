@@ -16,16 +16,12 @@ export const signUp = async(req, res) => {
     async function hashPassword(password) {
       const salt = await genSalt(10);
       const hash = await _hash(password, salt);
-      console.log("hash:", hash);
       return hash;
     }
   
     hashPassword(password).then((customerPassword) => {
-      console.log("after Hash:", customerPassword);
-  
       con.query(sql_findEmail, [email], function (err, result) {
         if (err) {
-          console.log('SQL Error:', err);
           res.status(205).json({
             success:false,
             message: 'Internal Server Error',
@@ -35,14 +31,12 @@ export const signUp = async(req, res) => {
           if (result[0] == null) {
             con.query(sql_insert, [persona,fname,lname, email, customerPassword], function (err, result) {
               if (err) {
-                console.log('SQL Error:', err);
                 res.status(205).json({
                   success:false,
                   message: 'Sign up failed',
                 });
               }
               else {
-                console.log("Sigunp successfull!");
                 
                 res.status(200).json({
                   success: true,
@@ -71,10 +65,10 @@ export const signIn = (req, res) => {
     var sql_findEmail = "SELECT * FROM user where email = ?";
     try{
       con.query(sql_findEmail, [email], (err, result) => {
+        console.log(err); 
         if(result[0]){
           const { userId } = result[0];
           const accessToken = createJWT(email, result[0].userId, 3600);
-          console.log('Access Token', accessToken);
           const tokenVerified = verifyToken(accessToken);
           if(tokenVerified){
             res.status(200).json({
@@ -174,7 +168,6 @@ export const updateUser = ( req, res) => {
         })
       }
       else{
-        console.log('Hererere\n', userId);
         con.query(getUserByIdQuery, [userId], (err, result2)=>{
           console.log(result2);
           if(result2[0]){
@@ -207,7 +200,6 @@ export const updateUser = ( req, res) => {
 export const getUser = (req, res) => {
   try{
     const userId = req.params.userId;
-    console.log(userId);
 
     const getUserByIdQuery = `SELECT * FROM user WHERE userId = ?`;
     con.query(getUserByIdQuery, [userId], (err, result)=>{
@@ -215,7 +207,6 @@ export const getUser = (req, res) => {
         sendInternalServerError(res);
       }
       else{
-        console.log('User Found', result[0]);
         sendCustomSuccess(res, result[0]);
       }
     });  

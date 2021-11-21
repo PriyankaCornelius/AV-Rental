@@ -10,6 +10,7 @@ import {fetchCarListFromDB, fetchCarListFromDBForOwner} from '../../services/car
 import Radio from '@mui/material/Radio';
 import { AuthContext } from '../authenticaion/ProvideAuth';
 
+
 function createData(rideNumber, carNumber, date,  charge) {
   return { rideNumber, carNumber, charge, date };
 }
@@ -47,12 +48,11 @@ export default function CarList(props) {
   }, [])
 
   const selectCar = (e) =>{
-    const {carId,model, chargePerDay } = JSON.parse(e.target.value);
-    console.log("Car selected", JSON.parse(e.target.value));
+    const {carNumber,model, chargePerDay } = JSON.parse(e.target.value);
     const {setRide, ride} = props;
     setRide({
       ...ride,
-      carId,
+      carNumber,
       model, 
       chargePerDay,
     })
@@ -60,13 +60,12 @@ export default function CarList(props) {
 
   const fetchCarListForCustomer = async (type) => {
     const resp = await fetchCarListFromDB(type);
-    console.log(resp);
     if(resp.status === 200){
-      console.log(resp.data.payload);
       const rows = [];
       resp.data.payload.forEach(el => {
-        const { carId, ownerId, type, model, chargePerDay, mileage} = el;
+        const { carNumber, carId, ownerId, type, model, chargePerDay, mileage} = el;
         rows.push({
+          carNumber,
           carId,
           ownerId, 
           type, 
@@ -86,13 +85,13 @@ export default function CarList(props) {
   }
   const fetchCarListForOwner = async (id) => {
     const resp = await fetchCarListFromDBForOwner(id);
-    console.log(resp);
     if(resp.status === 200){
-      console.log(resp.data.payload);
       const rows = [];
+      console.log(resp.data.payload);
       resp.data.payload.forEach(el => {
-        const { carId, ownerId, type, model, chargePerDay, mileage} = el;
+        const { carNumber, carId, ownerId, type, model, chargePerDay, mileage} = el;
         rows.push({
+          carNumber, 
           carId,
           ownerId, 
           type, 
@@ -118,33 +117,40 @@ export default function CarList(props) {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
+            {props.ride ? (
             <TableCell>Select</TableCell>
-            <TableCell>Type</TableCell>
-            <TableCell align="right">Car Number</TableCell>
+            ) : (
+            <TableCell >Car Number</TableCell>
+            )}
+            <TableCell align="right">Car Type</TableCell>
+            <TableCell align="right">Car Model</TableCell>
             <TableCell align="right">Charge Per Daye</TableCell>
             <TableCell align="right">Mileage</TableCell>
 
           </TableRow>
         </TableHead>
         <TableBody>
-          {carList.map((row) => (
+          {carList.map((row) => {
+            console.log('ROW', row);
+            return(
             <TableRow
-              key={row.carId}
+              key={row.carNumber}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              {props.ride && (
-              <Radio value={JSON.stringify(row)} checked={row.carId === props.ride.carId} onChange={selectCar}/>
+              {props.ride ? (
+              <Radio value={JSON.stringify(row)} checked={row.carNumber === props.ride.carNumber} onChange={selectCar}/>
+              ): (
+                <TableCell align="right">{row.carNumber}</TableCell>
+
               )}
-              <TableCell component="th" scope="row">
-                {row.type}
-              </TableCell>
+              <TableCell align="right">{row.type}</TableCell>
               <TableCell align="right">{row.model}</TableCell>
               <TableCell align="right">{row.chargePerDay}</TableCell>
               <TableCell align="right">{row.mileage}</TableCell>
 
 
             </TableRow>
-          ))}
+          )})}
         </TableBody>
       </Table>
     </TableContainer>

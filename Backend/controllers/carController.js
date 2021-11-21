@@ -5,6 +5,7 @@ export const addCar = (req, res) => {
     try{
         const {
             carId,
+            carNumber,
             ownerId, 
             model, 
             type, 
@@ -12,10 +13,11 @@ export const addCar = (req, res) => {
             available, 
             mileage,            
         } = req.body;
-
+        console.log('Rohit Shetty', req.body);
         const getCarByIdQuery = 'SELECT * FROM car WHERE carId = ?;';
 
         const carUpdateQuery = `UPDATE car SET
+            carNumber = ?,
             model = ?,
             type = ?,
             chargePerDay = ?,
@@ -25,18 +27,20 @@ export const addCar = (req, res) => {
         `;
         const carAddQuery = `INSERT INTO car (
             carId,
+            carNumber, 
             ownerId, 
             model, 
             type, 
             chargePerDay, 
             available, 
-            mileage) VALUES (NULL, ?,?,?,?,?,?)
+            mileage) VALUES (NULL,?, ?,?,?,?,?,?)
         `;
 
         const getLastInerstedIdQuery = `SELECT LAST_INSERT_ID();`;
 
         if(carId){ //Update
             con.query(carUpdateQuery, [
+                carNumber, 
                 model, 
                 type, 
                 chargePerDay,
@@ -61,6 +65,7 @@ export const addCar = (req, res) => {
         }
         else{ //Add New
             con.query(carAddQuery, [
+                carNumber,
                 ownerId, 
                 model, 
                 type, 
@@ -68,15 +73,19 @@ export const addCar = (req, res) => {
                 available,  
                 mileage, 
             ], (err, result) => {
+                console.log('RUSHIHLHLIHLIHILLHI', result);
+
                 if(err){
                     sendInternalServerError(res);
                 }
                 else{
+                    console.log('Adding Car');
                     con.query(getLastInerstedIdQuery, (err, result) => {
                         if(result){
                             let id = result[0]['LAST_INSERT_ID()'];
                             con.query(getCarByIdQuery, [id], (err, result)=>{
                                 if(result[0]){
+                                    console.log('')
                                     sendCustomSuccess(res, { data: result[0]});
                                 }
                                 else{
@@ -103,7 +112,6 @@ export const getCarsByType = (req, res) => {
     try{
         
         const type = req.query.type;
-        console.log(type);
         const filterCarsBasedOnTypeQuery = `SELECT * FROM car WHERE type = ?`;
         con.query(filterCarsBasedOnTypeQuery, [type], (err, result) => {
             if(err){

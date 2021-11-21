@@ -62,8 +62,6 @@ export default function Signup() {
 
 
     const response = await signup(data1);
-    console.log(response.data);
-    console.log(response.status);
     if(response.status === 200){
       setUser(response.data);
       setAuthState(true);

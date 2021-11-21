@@ -11,7 +11,6 @@ export default function FindSourceAndDestination(props) {
 
   
   const setSource = (e) => {
-    // console.log(e.target.value);
     const { ride, setRide} = props;
     setRide(
       {
@@ -21,7 +20,6 @@ export default function FindSourceAndDestination(props) {
     );
   }
   const setDestination = (e) => {
-    // console.log(e.target.value);
     const { ride, setRide} = props;
     setRide(
       {
@@ -31,7 +29,6 @@ export default function FindSourceAndDestination(props) {
     );
   }
   const setCarType = (e) => {
-    // console.log(e.target.value);
     const { ride, setRide} = props;
     setRide(
       {
@@ -78,7 +75,8 @@ export default function FindSourceAndDestination(props) {
           value={props.ride ? props.ride.carType : ''}
           label="Car Type"
           onChange={setCarType}
-        
+          autoWidth
+          style={{width:'30%'}}
         >
           <MenuItem value={'Sedan'}>Sedan</MenuItem>
           <MenuItem value={'Hatchback'}>Hatchback</MenuItem>

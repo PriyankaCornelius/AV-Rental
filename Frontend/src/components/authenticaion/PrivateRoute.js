@@ -1,5 +1,7 @@
+import React, {useContext} from 'react';
 import { AuthContext } from './ProvideAuth';
 import {Route, Redirect} from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 
 
 const PrivateRoute = ({ component: Component, ...rest }) => {

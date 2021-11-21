@@ -35,7 +35,6 @@ const InProgressRideList = props => {
     const {user} = authContext;
     const [inProgressRides, setInProgressRides] = useState([]);
     const [loading, setLoading] = useState(true);
-    console.log(props); 
 
 
 
@@ -45,8 +44,9 @@ const InProgressRideList = props => {
 
     const getInProgressRides = async () => {
         setLoading(true);
-        const {userId} = user;
-        const resp = await fechInProgressRides(userId);
+        const {userId, persona} = user;
+        const resp = await fechInProgressRides(userId, persona);
+        console.log(resp);
         if(resp.status === 200){
             setInProgressRides(resp.data.payload);
             setLoading(false);
@@ -56,39 +56,86 @@ const InProgressRideList = props => {
         }
     }
 
+    //   const selectRide = (e) =>{
+    //     const {carId,model, chargePerDay } = JSON.parse(e.target.value);
+    //     console.log("Ride selected", JSON.parse(e.target.value));
+    //     const {setRide, ride} = props;
+    //     setRide({
+    //       ...ride,
+    //       carId,
+    //       model, 
+    //       chargePerDay,
+    //     })
+    //   }
+
+    //   const fetchCarList = async (type) => {
+    //     const resp = await fetchCarListFromDB(type);
+    //     console.log(resp);
+    //     if(resp.status === 200){
+    //       console.log(resp.data.payload);
+    //       const rows = [];
+    //       resp.data.payload.forEach(el => {
+    //         const { carId, ownerId, type, model, chargePerDay, mileage} = el;
+    //         rows.push({
+    //           carId,
+    //           ownerId, 
+    //           type, 
+    //           model,
+    //           chargePerDay, 
+    //           mileage,
+    //         })
+    //       });
+    //       setCarList(rows);
+
+    //       setLoading(false);
+    //     }
+    //     else{
+    //       console.log(resp.data.message);
+    //     }
+
+    //   }
+
     return (
         <>
         {!loading && (
-        <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-            <TableRow>
-                <TableCell>Source</TableCell>
-                <TableCell align="right">Destination</TableCell>
-                <TableCell align="right">Car Number</TableCell>
-                <TableCell align="right">Status</TableCell>
-
-            </TableRow>
-            </TableHead>
-            <TableBody>
-            {inProgressRides.map((row) => (
-                <TableRow
-                key={row.rideId}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                <TableCell component="th" scope="row">
-                    {row.source}
-                </TableCell>
-                <TableCell align="right">{row.destination}</TableCell>
-                <TableCell align="right">{row.carId}</TableCell>
-                <TableCell align="right">{row.status}</TableCell>
-
-
+        <>
+        {inProgressRides.length > 0 ? (
+            <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                <TableRow>
+                    <TableCell>Source</TableCell>
+                    <TableCell align="right">Destination</TableCell>
+                    <TableCell align="right">Car Number</TableCell>
+                    <TableCell align="right">Status</TableCell>
+    
                 </TableRow>
-            ))}
-            </TableBody>
-        </Table>
-        </TableContainer>
+                </TableHead>
+                <TableBody>
+                {inProgressRides.map((row) => (
+                    <TableRow
+                    key={row.rideId}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                    <TableCell component="th" scope="row">
+                        {row.source}
+                    </TableCell>
+                    <TableCell align="right">{row.destination}</TableCell>
+                    <TableCell align="right">{row.carId}</TableCell>
+                    <TableCell align="right">{row.status}</TableCell>
+    
+    
+                    </TableRow>
+                ))}
+                </TableBody>
+            </Table>
+            </TableContainer>
+        ) : (
+            <span>No Rides in Progress</span>
+        )
+        }
+        
+        </>
         )}
         </>
     );

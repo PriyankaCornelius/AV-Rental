@@ -13,7 +13,6 @@ function Wallet(props) {
 
   const authContext = useContext(AuthContext);
   const { user, loading } = authContext;
-  console.log(authContext);
     var post = {
         image: "https://payspacemagazine.com/wp-content/uploads/2018/10/dollar1-1.jpg",
         imageLabel:"img"

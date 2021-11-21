@@ -92,7 +92,6 @@ const mdTheme = createTheme();
 
 const DashboardContent = () => {
 
-  console.log('Dashboard Called');
   const history = useHistory();
   const authContext = useContext(AuthContext);
   const {user, authState} = authContext;

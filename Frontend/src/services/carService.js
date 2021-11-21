@@ -7,7 +7,6 @@ export const fetchCarListFromDB = async type => {
     const response = await fetch(`http://localhost:5000/car/getCarsByType?type=${type}`, options);
     const status = response.status;
     const data = await response.json();
-    console.log(data);
     return {status, data};
 };
 export const fetchCarListFromDBForOwner = async (userId) => {
@@ -19,7 +18,6 @@ export const fetchCarListFromDBForOwner = async (userId) => {
     const response = await fetch(`http://localhost:5000/car/getCarsByOwner?ownerId=${userId}`, options);
     const status = response.status;
     const data = await response.json();
-    console.log(data);
     return {status, data};
 };
 
@@ -29,14 +27,14 @@ export const addCar = async (car, user) => {
         ownerId: user.userId,
         available:1,
     }
+    console.log(payload);
     const options = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        data: JSON.stringify(payload)
+        body: JSON.stringify(payload)
     }
     const response = await fetch(`http://localhost:5000/car/add`, options);
     const status = response.status;
     const data = await response.json();
-    console.log(data);
     return {status, data};
 }

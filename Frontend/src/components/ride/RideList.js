@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import {fetchRideListFromDB} from '../../services/rideService';
 import Radio from '@mui/material/Radio';
 import { AuthContext } from '../authenticaion/ProvideAuth';
+import {useLocation} from 'react-router-dom';
 
 function createData(rideNumber, carNumber, date,  charge) {
   return { rideNumber, carNumber, charge, date };
@@ -29,52 +30,47 @@ const rows = [
 
 ];
 
-export default function RideList(props) {
+export default function RideList() {
 
+    const location = useLocation();
+    console.log(location);
+
+    const {persona } = location.state;
     const authContext = useContext(AuthContext);
     const [rideList, setRideList] = useState();
     const [loading, setLoading] = useState(true);
-    console.log(props); 
     useEffect(() => {
         fetchRideList();
-    }, [])
-
-    const selectCar = (e) =>{
-        const {carId,model, chargePerDay } = JSON.parse(e.target.value);
-        console.log("Car selected", JSON.parse(e.target.value));
-        const {setRide, ride} = props;
-        setRide({
-        ...ride,
-        carId,
-        model, 
-        chargePerDay,
-        })
-    }
+    }, []);
 
     const fetchRideList = async () => {
         const {user} = authContext;
-        const resp = await fetchRideListFromDB(user.userId, user.persona);
-        console.log(resp);
+        
+        const resp = await fetchRideListFromDB(user.userId, persona);
         if(resp.status === 200){
-        console.log(resp.data.payload);
-        const rows = [];
-        resp.data.payload.forEach(el=> {
-            const { carId, rideId, source, destination, status, charges: chargePerDay} = el;
-            rows.push({
-                carId,
-                rideId, 
-                source, 
-                destination,
-                status, 
-                chargePerDay,
-            })
-        });
-        setRideList(rows);
+            console.log('HHHiii');
+            const rows = [];
+            console.log(resp.data.payload);
+            resp.data.payload.forEach(el=> {
+                console.log(el);
+                const { carNumber, carId, rideId, source, 
+                    destination, status, chargePerDay} = el;
+                rows.push({
+                    carId,
+                    carNumber, 
+                    rideId, 
+                    source, 
+                    destination,
+                    status, 
+                    chargePerDay,
+                })
+            });
+            setRideList(rows);
 
-        setLoading(false);
+            setLoading(false);
         }
         else{
-        console.log(resp.data.message);
+            console.log(resp.data.message);
         }
 
     }
@@ -91,6 +87,8 @@ export default function RideList(props) {
                 <TableCell align="right">Destination</TableCell>
                 <TableCell align="right">Charge Per Daye</TableCell>
                 <TableCell align="right">Car Number</TableCell>
+                <TableCell align="right">Status</TableCell>
+
 
             </TableRow>
             </TableHead>
@@ -106,7 +104,9 @@ export default function RideList(props) {
                 <TableCell align="right">{row.source}</TableCell>
                 <TableCell align="right">{row.destination}</TableCell>
                 <TableCell align="right">{row.chargePerDay}</TableCell>
-                <TableCell align="right">{row.carId}</TableCell>
+                <TableCell align="right">{row.carNumber}</TableCell>
+                <TableCell align="right">{row.status}</TableCell>
+
                 </TableRow>
             ))}
             </TableBody>

@@ -13,7 +13,7 @@ const ReviewCar = (props) => {
     const {car} = props;
     return (
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table sx={{ minWidth: 400 }} aria-label="simple table">
             <TableBody>
                 <TableRow
                     key={car.carId}
@@ -22,7 +22,7 @@ const ReviewCar = (props) => {
                     <TableCell component="th" scope="car">
                         Number
                     </TableCell>
-                    <TableCell align="right">{car.carId}</TableCell>
+                    <TableCell align="right">{car.carNumber}</TableCell>
                 </TableRow>
                 <TableRow
                     key={car.model}
@@ -40,7 +40,7 @@ const ReviewCar = (props) => {
                     <TableCell component="th" scope="car">
                         Type
                     </TableCell>
-                    <TableCell align="right">{car.carType}</TableCell>
+                    <TableCell align="right">{car.type}</TableCell>
                 </TableRow>
                 <TableRow
                     key={car.chargePerDay}
@@ -50,6 +50,15 @@ const ReviewCar = (props) => {
                         Expected Charge Per Day 
                     </TableCell>
                     <TableCell align="right">{car.chargePerDay}</TableCell>
+                </TableRow>
+                <TableRow
+                    key={car.cmileage}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                    <TableCell component="th" scope="car">
+                        mileage 
+                    </TableCell>
+                    <TableCell align="right">{car.mileage}</TableCell>
                 </TableRow>
             </TableBody>
           </Table>

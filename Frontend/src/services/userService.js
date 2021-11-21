@@ -1,11 +1,9 @@
 export const updateUserProfile = async (payload) => {
-    console.log(payload);
     const options = {
         method: 'POST',
         headers: {'Content-Type':  'application/json'},
         body: JSON.stringify(payload),
     };
-    console.log(options);
     const response = await fetch('http://localhost:5000/user/updateUser', options);
     const status = response.status;
     const data = await response.json();

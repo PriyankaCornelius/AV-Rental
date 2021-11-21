@@ -5,6 +5,8 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { Card } from '@mui/material';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 const CarDetails = props => {
 
@@ -15,7 +17,6 @@ const CarDetails = props => {
       ...car,
       [field]: e.target.value,
     })
-    console.log(e.target.value);
   }
 
 
@@ -33,8 +34,8 @@ const CarDetails = props => {
             fullWidth
             autoComplete="Car Type"
             variant="standard"
-            onChange={(e)=>handleFormChange(e,'carId')}
-            defaultValue={car ? car.carId: ''}
+            onChange={(e)=>handleFormChange(e,'carNumber')}
+            defaultValue={car ? car.carNumber: ''}
           />
         </Grid>
         <Grid item xs={12}>
@@ -57,7 +58,7 @@ const CarDetails = props => {
             fullWidth
             autoComplete="Your expected charges: $"
             variant="standard"
-            onChange={(e)=>handleFormChange(e,'chargesPerDay')}
+            onChange={(e)=>handleFormChange(e,'chargePerDay')}
             defaultValue={car ? car.chargePerDay: ''}
           />
         </Grid>
@@ -69,10 +70,24 @@ const CarDetails = props => {
             fullWidth
             autoComplete="Mileage of you car"
             variant="standard"
-            onChange={(e)=>handleFormChange(e,'mieleage')}
+            onChange={(e)=>handleFormChange(e,'mileage')}
             defaultValue={car ? car.mileage: ''}
           />
         </Grid>
+        <Grid item xs={12}>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={props.car? props.car.type : ''}
+            label="Car Type"
+            onChange={(e)=>handleFormChange(e,'type')}
+            autoWidth
+            style={{width:'30%'}}
+          >
+            <MenuItem value={'Sedan'}>Sedan</MenuItem>
+            <MenuItem value={'Hatchback'}>Hatchback</MenuItem>
+            </Select>
+          </Grid>
         <Grid item xs={12}>
           <FormControlLabel
             control={<Checkbox color="secondary" name="saveAddress" value="yes" />}

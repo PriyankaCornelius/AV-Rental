@@ -11,6 +11,7 @@ import Dashboard from './Dashboard';
 import ProvideAuth from './authenticaion/ProvideAuth';
 import CarList from './car/CarList';
 import RideList from './ride/RideList';
+import PrivateRoute from './authenticaion/PrivateRoute';
 
 const Main = () => {
     const [user, setUser] = useState();
@@ -52,38 +53,43 @@ const Main = () => {
         <div>
             {!loading && (
                 <ProvideAuth value={{user, authState, token}}>
-                <Router>
-                    <Route path="/">
-                        <NavBar></NavBar>
-                    </Route>
-                    <Route path="/login">
-                        <Login></Login>
-                    </Route>
-                    <Route path="/signup">
-                        <Signup></Signup>
-                    </Route>
-                    <Route path="/profile">
-                        <Profile></Profile>
-                    </Route>
-                    <Route path="/pricing">
-                        <Pricing></Pricing>
-                    </Route>
-                    <Route path="/searchCar">
-                        <SearchCar></SearchCar>
-                    </Route>
-                    <Route path="/addCar">
-                            <AddCar></AddCar>
-                    </Route>
-                    <Route path="/Dashboard">
-                        <Dashboard></Dashboard>
-                    </Route>
-                    <Route path="/CarList">
-                        <CarList persona={'owner'}/>
-                    </Route>
-                    <Route path="/RideList">
-                        <RideList/>
-                    </Route>
-                </Router>
+                    
+                    <Router>
+                    <PrivateRoute>
+                        <Route path="/">
+                            {/* <Login></Login> */}
+                            <NavBar></NavBar>
+                        </Route>
+                        <Route path="/login">
+                            <Login></Login>
+                        </Route>
+                        <Route path="/signup">
+                            <Signup></Signup>
+                        </Route>
+                        <Route path="/profile">
+                            <Profile></Profile>
+                        </Route>
+                        <Route path="/pricing">
+                            <Pricing></Pricing>
+                        </Route>
+                        <Route path="/searchCar">
+                            <SearchCar></SearchCar>
+                        </Route>
+                        <Route path="/addCar">
+                                <AddCar></AddCar>
+                        </Route>
+                        <Route path="/Dashboard">
+                            <Dashboard></Dashboard>
+                        </Route>
+                        <Route path="/CarList">
+                            <CarList persona={'owner'}/>
+                        </Route>
+                        <Route path="/RideList">
+                            <RideList/>
+                        </Route>
+                    </PrivateRoute>
+
+                    </Router>
                 </ProvideAuth>
             )
             }

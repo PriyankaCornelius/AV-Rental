@@ -13,7 +13,6 @@ export const addRide = (req, res) => {
             chargePerDay: charges, 
             status,            
         } = req.body;
-        console.log('Request Body', req.body);
 
         const getRideByIdQuery = 'SELECT * FROM ride WHERE rideId = ?;';
 
@@ -67,7 +66,6 @@ export const addRide = (req, res) => {
             });
         }
         else{ //Add New
-            console.log('Adding ride');
             con.query(rideAddQuery, [
                 carId,
                 customerId, 
@@ -77,14 +75,12 @@ export const addRide = (req, res) => {
                 charges, 
                 status,
             ], (err, result) => {
-                console.log('Adding ride2');
 
                 if(err){
                     console.log(err);
                     sendInternalServerError(res);
                 }
                 else{
-                    console.log('here');
                     con.query(getLastInerstedIdQuery, (err, result) => {
                         if(result){
                             let id = result[0]['LAST_INSERT_ID()'];
@@ -135,15 +131,20 @@ export const addRide = (req, res) => {
 export const getInProgressRide = (req, res) => {
     try{
         const userId = req.query.userId;
-        const inProgressRidesQuery = `select ride.carId, rideId, source, destination, status, customerId 
+        const persona = req.query.persona;
+        console.log(persona);
+        const inProgressRidesQuery = `select carNumber, chargePerDay, 
+        ride.carId, rideId, source, destination, status, customerId 
                 from ride INNER JOIN car on car.carId = ride.carId 
-                where customerId = ? and status = 'In-Progress';`;
-        con.query(inProgressRidesQuery, [userId], (err, result)=>{
+                inner join user on ride.customerId = user.userId 
+                where customerId = ? and status = 'In-Progress' and persona = ?;`;
+        con.query(inProgressRidesQuery, [userId, persona], (err, result)=>{
             if(err){
+                console.log(err);
                 sendInternalServerError(res);
             }
             else{
-                console.log('In Progress Rides', result);
+                console.log('Rides/////', result);
                 sendCustomSuccess(res, result); 
             }
         })
@@ -157,17 +158,16 @@ export const getUserRides = (req, res) => {
     try{
         const userId = req.query.userId;
         const persona = req.query.persona;
-        console.log(persona);
         let query;
         if(persona === 'owner'){
-            console.log(persona);
-            query = `select ride.carId, rideId, source, destination, status, customerId, charges
+            query = `select carNumber, chargePerDay, ride.carId, 
+            rideId, source, destination, status, customerId, charges
             from ride INNER JOIN car on car.carId = ride.carId 
             where car.ownerId = ?`;
         }
         else if(persona === 'customer'){
-            console.log(persona);
-            query = `select ride.carId, rideId, source, destination, status, customerId, charges
+            query = `select carNumber, ride.carId, chargePerDay,
+            rideId, source, destination, status, customerId, charges
                 from ride INNER JOIN car on car.carId = ride.carId 
                 where customerId = ?`;
         }
@@ -178,13 +178,11 @@ export const getUserRides = (req, res) => {
                 sendInternalServerError(res);
             }
             else{
-                console.log('In Progress Rides', result);
                 sendCustomSuccess(res, result); 
             }
         })
     }
     catch(e){
-        console.log('Here');
         sendInternalServerError(e);
     }
 }

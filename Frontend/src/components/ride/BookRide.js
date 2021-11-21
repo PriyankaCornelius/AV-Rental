@@ -44,13 +44,11 @@ export default function BookRide() {
   const authContext = useContext(AuthContext);
   const {user} = authContext;
   const handleNext = async () => {
-    console.log(ride);
-    console.log(activeStep);
-    console.log(authContext, user);
     setActiveStep(activeStep + 1);
     if(activeStep == 2){
       const resp = await bookRide(ride, user);
       if(resp.status === 200){
+        setRide(resp.data.payload);
         setLoading(false);
       }
       else{
@@ -119,7 +117,7 @@ export default function BookRide() {
                   Thank you for your order.
                 </Typography>
                 <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your order
+                  Your order number is {ride.rideId}. We have emailed your order
                   confirmation, and will send you an update when your order has
                   shipped.
                 </Typography>
