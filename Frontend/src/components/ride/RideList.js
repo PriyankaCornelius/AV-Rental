@@ -7,7 +7,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {fetchRideListFromDB} from '../../services/rideService';
-import Radio from '@mui/material/Radio';
 import { AuthContext } from '../authenticaion/ProvideAuth';
 import {useLocation} from 'react-router-dom';
 
@@ -42,13 +41,13 @@ export default function RideList() {
     useEffect(() => {
         fetchRideList();
     }, []);
+    console.log(authContext);
 
     const fetchRideList = async () => {
         const {user} = authContext;
         
         const resp = await fetchRideListFromDB(user.userId, persona);
         if(resp.status === 200){
-            console.log('HHHiii');
             const rows = [];
             console.log(resp.data.payload);
             resp.data.payload.forEach(el=> {
@@ -66,7 +65,6 @@ export default function RideList() {
                 })
             });
             setRideList(rows);
-
             setLoading(false);
         }
         else{
@@ -88,8 +86,6 @@ export default function RideList() {
                 <TableCell align="right">Charge Per Daye</TableCell>
                 <TableCell align="right">Car Number</TableCell>
                 <TableCell align="right">Status</TableCell>
-
-
             </TableRow>
             </TableHead>
             <TableBody>
@@ -105,7 +101,7 @@ export default function RideList() {
                 <TableCell align="right">{row.destination}</TableCell>
                 <TableCell align="right">{row.chargePerDay}</TableCell>
                 <TableCell align="right">{row.carNumber}</TableCell>
-                <TableCell align="right">{row.status}</TableCell>
+                <TableCell style={{color:' green'}}align="right">{row.status}</TableCell>
 
                 </TableRow>
             ))}

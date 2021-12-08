@@ -25,6 +25,7 @@ import Button from '@mui/material/Button';
 import {useHistory} from 'react-router-dom';
 import { fechInProgressRides } from '../services/rideService';
 import InProgressRideList from './ride/InProgressRideList';
+import BookRideButton from './ride/BookRideButton';
 
 
 function Copyright(props) {
@@ -102,11 +103,7 @@ const DashboardContent = () => {
     setOpen(!open);
   };
 
-
-  const redirectToAddCar = () => {
-    history.push('./searchCar');
-  }
-  
+  console.log(authContext);
   return (
     <>
     {(
@@ -191,9 +188,8 @@ const DashboardContent = () => {
                   }}
                 >
                   {/* <Chart /> */}
-                  <Button onClick={()=>{redirectToAddCar()}} variant="contained" disableElevation>
-                    Book a Ride
-                  </Button>
+                  
+                  <BookRideButton/>
                 </Paper>
               </Grid>
               {/* Recent Deposits */}

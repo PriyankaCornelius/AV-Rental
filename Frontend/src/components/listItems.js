@@ -20,19 +20,19 @@ return(
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText style={{color: 'crimson'}} primary="Dashboard" />
+      <ListItemText style={{color: 'Black'}} primary="Dashboard" />
     </ListItem>
     <ListItem button component={Link} to="/profile">
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-            <ListItemText style={{color: 'crimson'}} primary="Profile" />
+            <ListItemText style={{color: 'Black'}} primary="Profile" />
         </ListItem>
     <ListItem button component={Link} to="/pricing">
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText style={{color: 'crimson'}} primary="Payment Plan" />
+      <ListItemText style={{color: 'Black'}} primary="Payment Plan" />
     </ListItem>
     {persona === 'owner' && (
     <Link to={{
@@ -44,7 +44,7 @@ return(
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
-        <ListItemText style={{color: 'crimson'}} primary="Your Asset Rides" />
+        <ListItemText style={{color: 'Black'}} primary="Your Asset Rides" />
       </ListItem>
       </Link>
     )}
@@ -57,22 +57,22 @@ return(
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText style={{color: 'crimson'}} primary="Your Rides" />
+      <ListItemText style={{color: 'Black'}} primary="Your Rides" />
     </ListItem>
     </Link>
     
-    <ListItem button>
+    <ListItem button component={Link} to='/AdminAnalysis'>
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
-      <ListItemText style={{color: 'crimson'}} primary="Integrations" />
+      <ListItemText style={{color: 'Black'}} primary="Integrations" />
     </ListItem>
     {persona === 'owner' && (
       <ListItem button component={Link} to='/AddCar'>
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
-      <ListItemText style={{color: 'crimson'}} primary="Add a Car" />
+      <ListItemText style={{color: 'Black'}} primary="Add a Car" />
     </ListItem>
     )}
     {persona === 'owner' && (
@@ -80,7 +80,7 @@ return(
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
-      <ListItemText style={{color: 'crimson'}} primary="View Assets" />
+      <ListItemText style={{color: 'Black'}} primary="View Assets" />
     </ListItem>
     )}
 
@@ -94,19 +94,19 @@ export const secondaryListItems = (
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText style={{color: 'crimson'}} primary="Current month" />
+      <ListItemText style={{color: 'Black'}} primary="Current month" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText style={{color: 'crimson'}} primary="Last quarter" />
+      <ListItemText style={{color: 'Black'}} primary="Last quarter" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText style={{color: 'crimson'}} primary="Year-end sale" />
+      <ListItemText style={{color: 'Black'}} primary="Year-end sale" />
     </ListItem>
   </div>
 );

@@ -122,7 +122,7 @@ const InProgressRideList = props => {
                     </TableCell>
                     <TableCell align="right">{row.destination}</TableCell>
                     <TableCell align="right">{row.carId}</TableCell>
-                    <TableCell align="right">{row.status}</TableCell>
+                    <TableCell style={{color:' green'}}align="right">{row.status}</TableCell>
     
     
                     </TableRow>

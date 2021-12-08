@@ -14,7 +14,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Redirect } from "react-router";
+import { Redirect, useHistory } from "react-router";
 import {signup} from '../../services/authenticationService';
 import { AuthContext } from '../authenticaion/ProvideAuth';
 
@@ -36,8 +36,11 @@ const theme = createTheme();
 
 export default function Signup() {
 
+  const history = useHistory();
+
   const [idCreated, setidCreated] = useState(0);
   const authContext = useContext(AuthContext);
+  const [persona, setPersona] = useState('');
 
   const {setUser, setAuthState, updateLocalStorage} = authContext;
 
@@ -49,7 +52,7 @@ export default function Signup() {
     var admin = data.get('admin');
     var persona;
     if (customer === 'on') persona = "customer";
-    if (carOwner === 'on') persona = "carOwner";
+    if (carOwner === 'on') persona = "owner";
     if (admin === 'on') persona = "admin";
     // eslint-disable-next-line no-console
     var data1= {
@@ -60,12 +63,16 @@ export default function Signup() {
       persona:persona,
     };
 
-
+    console.log(data1);
     const response = await signup(data1);
     if(response.status === 200){
       setUser(response.data);
       setAuthState(true);
       updateLocalStorage(response.data); //Need to call after setUser
+      setTimeout(()=>{
+        history.push('/login');
+      }, 500);
+      
     }
     else{
       setAuthState(false);
@@ -119,21 +126,43 @@ export default function Signup() {
               <br></br>
             <Grid item xs={12}>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="customer" id="customer"/>
-                    <label class="form-check-label" for="customer">
-                    Customer
+                    <input 
+                      checked={persona === 'Customer'} 
+                      class="form-check-input" 
+                      type="radio" 
+                      name="customer" 
+                      id="customer"
+                      onClick={()=>{setPersona('Customer')}}
+                    />
+                    <label 
+                      class="form-check-label" for="customer">
+                      Customer
                     </label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="carOwner" id="carOwner"/>
+                    <input 
+                      checked={persona === 'Owner'}  
+                      class="form-check-input" 
+                      type="radio" 
+                      name="carOwner" 
+                      id="carOwner"
+                      onClick={()=>{setPersona('Owner')}}
+                    />
                     <label class="form-check-label" for="carOwner">
-                    Car Owner
+                      Car Owner
                     </label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="admin" id="admin"/>
+                    <input 
+                      checked={persona === 'Admin'} 
+                      class="form-check-input" 
+                      type="radio" 
+                      name="admin" 
+                      id="admin"
+                      onClick={()=>{setPersona('Admin')}}  
+                    />
                     <label class="form-check-label" for="admin">
-                    Admin
+                      Admin
                     </label>
                   </div>
               </Grid>

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useContext} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -14,11 +14,14 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
+import {updateUserProfile} from '../../services/userService';
+import { AuthContext } from '../authenticaion/ProvideAuth';
+import { useHistory } from 'react-router';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
+      {'Copyright ©️ '}
       <Link color="inherit" href="https://mui.com/">
         Your Website
       </Link>{' '}
@@ -28,13 +31,15 @@ function Copyright(props) {
   );
 }
 
+
 const tiers = [
   {
     title: 'Free',
     price: '0',
+    walletUpgrade: '100',
     description: [
-      '10 users included',
-      '2 GB of storage',
+      '100$ signup rewards',
+      'Valid for 3 months',
       'Help center access',
       'Email support',
     ],
@@ -45,9 +50,10 @@ const tiers = [
     title: 'Pro',
     subheader: 'Most popular',
     price: '15',
+    walletUpgrade: '200',
     description: [
-      '20 users included',
-      '10 GB of storage',
+      '100$ Signup rewards',
+      '100$ Addtional wallet rewards',
       'Help center access',
       'Priority email support',
     ],
@@ -57,13 +63,14 @@ const tiers = [
   {
     title: 'Enterprise',
     price: '30',
+    walletUpgrade: '300',
     description: [
-      '50 users included',
-      '30 GB of storage',
+      '100$ Signup rewards',
+      '200$ Addtional wallet rewards',
       'Help center access',
       'Phone & email support',
     ],
-    buttonText: 'Contact us',
+    buttonText: 'Get Started',
     buttonVariant: 'outlined',
   },
 ];
@@ -94,6 +101,35 @@ const footers = [
 ];
 
 function PricingContent() {
+
+  const authContext = useContext(AuthContext);
+  const history = useHistory();
+  const {user, setUser, token, updateLocalStorage} = authContext;
+  const walletUpgradeHandler = async (walletUpgrade) => {
+
+    console.log("walletUpgrade : ", walletUpgrade);
+    const obj = {
+      ...user,
+      walletBalance: walletUpgrade
+    }
+    const response = await updateUserProfile(obj);
+    console.log(response);
+    if(response.status === 200){
+      window.alert("Wallet has been upgraded to $ " + walletUpgrade);
+      setUser(response.data.payload.data);
+      updateLocalStorage(user, token);
+      setTimeout(()=>{
+        console.log("history.push('/Dashboard');");
+        history.push('/Dashboard');
+      }, 500);
+    } 
+    else{
+      console.log('Error Occuered');
+    }
+  }
+
+
+
   return (
     <React.Fragment>
       <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -104,40 +140,6 @@ function PricingContent() {
         elevation={0}
         sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
       >
-        {/* <Toolbar sx={{ flexWrap: 'wrap' }}>
-          <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-            Company name
-          </Typography>
-          <nav>
-            <Link
-              variant="button"
-              color="text.primary"
-              href="#"
-              sx={{ my: 1, mx: 1.5 }}
-            >
-              Features
-            </Link>
-            <Link
-              variant="button"
-              color="text.primary"
-              href="#"
-              sx={{ my: 1, mx: 1.5 }}
-            >
-              Enterprise
-            </Link>
-            <Link
-              variant="button"
-              color="text.primary"
-              href="#"
-              sx={{ my: 1, mx: 1.5 }}
-            >
-              Support
-            </Link>
-          </nav>
-          <Button href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-            Login
-          </Button>
-        </Toolbar> */}
       </AppBar>
       {/* Hero unit */}
       <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
@@ -212,7 +214,7 @@ function PricingContent() {
                   </ul>
                 </CardContent>
                 <CardActions>
-                  <Button fullWidth variant={tier.buttonVariant}>
+                  <Button fullWidth variant={tier.buttonVariant} onClick={()=>walletUpgradeHandler(tier.walletUpgrade)}>
                     {tier.buttonText}
                   </Button>
                 </CardActions>

@@ -12,6 +12,7 @@ import ProvideAuth from './authenticaion/ProvideAuth';
 import CarList from './car/CarList';
 import RideList from './ride/RideList';
 import PrivateRoute from './authenticaion/PrivateRoute';
+import AdminAnalysis from './integration/AdminAnalysis';
 
 const Main = () => {
     const [user, setUser] = useState();
@@ -55,7 +56,6 @@ const Main = () => {
                 <ProvideAuth value={{user, authState, token}}>
                     
                     <Router>
-                    <PrivateRoute>
                         <Route path="/">
                             {/* <Login></Login> */}
                             <NavBar></NavBar>
@@ -66,29 +66,33 @@ const Main = () => {
                         <Route path="/signup">
                             <Signup></Signup>
                         </Route>
-                        <Route path="/profile">
+                         <PrivateRoute path="/profile">
                             <Profile></Profile>
-                        </Route>
-                        <Route path="/pricing">
+                        </PrivateRoute>
+                        <PrivateRoute path="/pricing">
                             <Pricing></Pricing>
-                        </Route>
-                        <Route path="/searchCar">
+                        </PrivateRoute>
+                        
+                        <PrivateRoute path="/searchCar">
                             <SearchCar></SearchCar>
-                        </Route>
-                        <Route path="/addCar">
+                        </PrivateRoute>
+                        
+                        <PrivateRoute path="/AddCar">
                                 <AddCar></AddCar>
-                        </Route>
-                        <Route path="/Dashboard">
+                        </PrivateRoute>
+                        
+                        <PrivateRoute path="/CarList">
+                                <CarList persona={'owner'}/>
+                        </PrivateRoute>
+                        <PrivateRoute path="/RideList">
+                                <RideList/>
+                        </PrivateRoute>
+                        <PrivateRoute path="/Dashboard">
                             <Dashboard></Dashboard>
-                        </Route>
-                        <Route path="/CarList">
-                            <CarList persona={'owner'}/>
-                        </Route>
-                        <Route path="/RideList">
-                            <RideList/>
-                        </Route>
-                    </PrivateRoute>
-
+                        </PrivateRoute>
+                        <PrivateRoute path="/AdminAnalysis">
+                            <AdminAnalysis/>
+                        </PrivateRoute>
                     </Router>
                 </ProvideAuth>
             )

@@ -4,27 +4,27 @@ import {Route, Redirect} from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ children, ...rest }) => {
     const contextValue = useContext(AuthContext);
+    console.log(children, contextValue, rest);
     return (
-      <div>
-  
-      {contextValue.isAuthenticated == null && contextValue.loading ? <CircularProgress/> : (<Route
-          {...rest}
-          render={({ location }) =>
-            contextValue.isAuthenticated ? (
-              <Component></Component>
+      <Route
+      {...rest}
+      render={
+        ({ location }) => (
+          contextValue.isAuthenticated
+            ? (
+              children
             ) : (
               <Redirect
                 to={{
-                  pathname: "/login",
+                  pathname: '/login',
                   state: { from: location }
                 }}
               />
-            )
-          }
-        />)}
-      </div>
+            ))
+      }
+    />
     );
   }
   

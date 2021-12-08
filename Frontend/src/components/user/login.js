@@ -35,7 +35,6 @@ const theme = createTheme();
 
 export default function SignInSide() {
 
-
   const authContext = useContext(AuthContext);
 
   const {setUser, setAuthState, updateLocalStorage} = authContext;
@@ -61,7 +60,7 @@ export default function SignInSide() {
     })
     if(response.status === 200){
       setUser(response.data.payload.data[0]);
-      setAuthState(true);
+      setAuthState(true)
       setTimeout(()=>{
         history.push('/Dashboard');
       }, 500);
