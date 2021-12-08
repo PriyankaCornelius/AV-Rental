@@ -23,7 +23,7 @@ export const bookRide = async (ride, user) => {
         headers:  {'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
     };
-    const response = await fetch('http://localhost:5000/ride/addRide', options);
+    const response = await fetch('http://ec2-3-14-43-170.us-east-2.compute.amazonaws.com:5000/ride/addRide', options);
     const status = response.status;
     const data = await response.json();
     return {status, data};
@@ -34,7 +34,7 @@ export const fechInProgressRides = async (userId, persona) => {
         method: 'GET',
         headers: {'Content-Type': 'application/json'},
     }
-    const response = await fetch(`http://localhost:5000/ride/inProgress?userId=${userId}&persona=${persona}`, options);
+    const response = await fetch(`http://ec2-3-14-43-170.us-east-2.compute.amazonaws.com:5000/ride/inProgress?userId=${userId}&persona=${persona}`, options);
     const status = response.status;
     const data  = await response.json();
     return {status, data};
@@ -46,7 +46,7 @@ export const fetchRideListFromDB = async (customerId, persona) => {
         headers: {'Content-Type': 'application/json'},
     }
 
-    const response = await fetch(`http://localhost:5000/ride/userRides?userId=${customerId}&persona=${persona}`, options);
+    const response = await fetch(`http://ec2-3-14-43-170.us-east-2.compute.amazonaws.com:5000/ride/userRides?userId=${customerId}&persona=${persona}`, options);
     const status = response.status;
     const data  = await response.json();
     console.log('Ride Service', data);

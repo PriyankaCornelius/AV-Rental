@@ -16,7 +16,7 @@ const ProvideAuth = props => {
     //     const user = JSON.parse(userObj);
     //     if(token){
     //         setLoading(true);
-    //         const response = await fetch(`http://localhost:5000/user/verifyToken/${token}`);
+    //         const response = await fetch(`http://ec2-3-14-43-170.us-east-2.compute.amazonaws.com:5000/user/verifyToken/${token}`);
     //         setAuthState(response.state === 200);
     //         setUser(user);
     //         setLoading(false);
