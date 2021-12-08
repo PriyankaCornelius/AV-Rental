@@ -144,7 +144,7 @@ export const getInProgressRide = (req, res) => {
                 sendInternalServerError(res);
             }
             else{
-                console.log('Rides/////', result);
+                console.log('Rides', result);
                 sendCustomSuccess(res, result); 
             }
         })

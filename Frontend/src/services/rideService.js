@@ -22,7 +22,7 @@ export const bookRide = async (ride, user) => {
         headers:  {'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
     };
-    const response = await fetch('${BACKEND_URL}:${BACKEND_PORT}/ride/addRide', options);
+    const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/ride/addRide`, options);
     const status = response.status;
     const data = await response.json();
     return {status, data};
