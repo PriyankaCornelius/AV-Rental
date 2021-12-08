@@ -17,6 +17,7 @@ import Container from '@mui/material/Container';
 import {updateUserProfile} from '../../services/userService';
 import { AuthContext } from '../authenticaion/ProvideAuth';
 import { useHistory } from 'react-router';
+import Snackbar from '@mui/material/Snackbar';
 
 function Copyright(props) {
   return (
@@ -102,8 +103,14 @@ const footers = [
 function PricingContent() {
 
   const authContext = useContext(AuthContext);
+  const [open, setOpen] = useState(false);
   const history = useHistory();
   const {user, setUser, token, updateLocalStorage} = authContext;
+
+  const handleClose = () => {
+    setOpen(false);
+  } 
+
   const walletUpgradeHandler = async (walletUpgrade) => {
 
     console.log("walletUpgrade : ", walletUpgrade);
@@ -114,7 +121,8 @@ function PricingContent() {
     const response = await updateUserProfile(obj);
     console.log(response);
     if(response.status === 200){
-      window.alert("Wallet has been upgraded to $ " + walletUpgrade);
+      // window.alert("Wallet has been upgraded to $ " + walletUpgrade);
+      setOpen(true);
       setUser(response.data.payload.data);
       updateLocalStorage(user, token);
       setTimeout(()=>{
@@ -131,6 +139,12 @@ function PricingContent() {
 
   return (
     <React.Fragment>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message="Payment Plan Updated"
+      />
       <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
       <CssBaseline />
       <AppBar
