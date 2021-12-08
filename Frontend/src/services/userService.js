@@ -1,10 +1,12 @@
+import { BACKEND_URL } from "./constants";
+import { BACKEND_PORT } from "./constants";
 export const updateUserProfile = async (payload) => {
     const options = {
         method: 'POST',
         headers: {'Content-Type':  'application/json'},
         body: JSON.stringify(payload),
     };
-    const response = await fetch('http://ec2-3-14-43-170.us-east-2.compute.amazonaws.com:5000/user/updateUser', options);
+    const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/user/updateUser`, options);
     const status = response.status;
     const data = await response.json();
     return {
@@ -18,7 +20,7 @@ export const getUserDetails = async id => {
         method: 'GET',
         headers: {'Content-Type': 'application/json'},
     };
-    const response = await fetch(`http://ec2-3-14-43-170.us-east-2.compute.amazonaws.com:5000/user/${id}`,);
+    const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/user/${id}`,);
     const status = response.status;
     const data = await response.json();
     return {status, data};

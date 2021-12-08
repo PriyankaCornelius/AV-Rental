@@ -3,7 +3,6 @@ import React from 'react';
 const AdminAnalysis = () => {
     return(
         <React.Fragment>
-            <h2 style={{color: 'violet'}}>Data Analysis</h2>
         <div>
         <div style={{position: "relative", height: "520px", width: "100%"}}>
             <iframe 

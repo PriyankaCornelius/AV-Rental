@@ -46,7 +46,6 @@ const InProgressRideList = props => {
         setLoading(true);
         const {userId, persona} = user;
         const resp = await fechInProgressRides(userId, persona);
-        console.log(resp);
         if(resp.status === 200){
             setInProgressRides(resp.data.payload);
             setLoading(false);

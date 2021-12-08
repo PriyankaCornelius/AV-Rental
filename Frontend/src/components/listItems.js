@@ -13,79 +13,82 @@ import { Redirect } from 'react-router-dom';
 import ListItemButton from '@mui/material/ListItemButton';
 import { Link } from "react-router-dom";
 export const mainListItems = (persona) => {
-  
-return(
-  <div>
-    <ListItem button>
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText style={{color: 'Black'}} primary="Dashboard" />
-    </ListItem>
-    <ListItem button component={Link} to="/profile">
-      <ListItemIcon>
-        <ShoppingCartIcon />
-      </ListItemIcon>
-            <ListItemText style={{color: 'Black'}} primary="Profile" />
+  console.log(persona);
+  return(
+    <div>
+      <ListItem button>
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText style={{color: 'Black'}} primary="Dashboard" />
+      </ListItem>
+      <ListItem button component={Link} to="/profile">
+        <ListItemIcon>
+          <ShoppingCartIcon />
+        </ListItemIcon>
+              <ListItemText style={{color: 'Black'}} primary="Profile" />
+          </ListItem>
+      <ListItem button component={Link} to="/pricing">
+        <ListItemIcon>
+          <PeopleIcon />
+        </ListItemIcon>
+        <ListItemText style={{color: 'Black'}} primary="Payment Plan" />
+      </ListItem>
+      {(persona === 'owner' || persona === 'admin') && (
+      <Link to={{
+        pathname: '/RideList',
+        state: {
+          persona: 'owner'
+        }}}>
+        <ListItem button >
+          <ListItemIcon>
+            <BarChartIcon />
+          </ListItemIcon>
+          <ListItemText style={{color: 'Black'}} primary="Your Asset Rides" />
         </ListItem>
-    <ListItem button component={Link} to="/pricing">
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText style={{color: 'Black'}} primary="Payment Plan" />
-    </ListItem>
-    {persona === 'owner' && (
-    <Link to={{
+        </Link>
+      )}
+      <Link to={{
       pathname: '/RideList',
       state: {
-        persona: 'owner'
+        persona: 'customer'
       }}}>
       <ListItem button >
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
-        <ListItemText style={{color: 'Black'}} primary="Your Asset Rides" />
+        <ListItemText style={{color: 'Black'}} primary="Your Rides" />
       </ListItem>
       </Link>
-    )}
-    <Link to={{
-    pathname: '/RideList',
-    state: {
-      persona: 'customer'
-    }}}>
-    <ListItem button >
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText style={{color: 'Black'}} primary="Your Rides" />
-    </ListItem>
-    </Link>
-    
-    <ListItem button component={Link} to='/AdminAnalysis'>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText style={{color: 'Black'}} primary="Integrations" />
-    </ListItem>
-    {persona === 'owner' && (
-      <ListItem button component={Link} to='/AddCar'>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText style={{color: 'Black'}} primary="Add a Car" />
-    </ListItem>
-    )}
-    {persona === 'owner' && (
-      <ListItem button component={Link} to='/CarList'>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText style={{color: 'Black'}} primary="View Assets" />
-    </ListItem>
-    )}
+      
+      
+      {(persona === 'owner' || persona === 'admin' )&& (
+        <ListItem button component={Link} to='/AddCar'>
+        <ListItemIcon>
+          <LayersIcon />
+        </ListItemIcon>
+        <ListItemText style={{color: 'Black'}} primary="Add a Car" />
+      </ListItem>
+      )}
+      {(persona === 'owner' || persona === 'admin') && (
+        <ListItem button component={Link} to='/CarList'>
+        <ListItemIcon>
+          <LayersIcon />
+        </ListItemIcon>
+        <ListItemText style={{color: 'Black'}} primary="View Assets" />
+      </ListItem>
+      )}
+      {persona === 'admin' && (
+        <ListItem button component={Link} to='/AdminAnalysis'>
+            <ListItemIcon>
+              <LayersIcon />
+            </ListItemIcon>
+          <ListItemText style={{color: 'Black'}} primary="Business Trends" />
+        </ListItem>
+      )}
 
-  </div>
-)};
+    </div>
+  )};
 
 export const secondaryListItems = (
   <div>

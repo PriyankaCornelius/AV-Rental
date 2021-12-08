@@ -160,7 +160,6 @@ const DashboardContent = () => {
           <Divider />
           <List>{mainListItems(user.persona)}</List>
           <Divider />
-          <List>{secondaryListItems}</List>
         </Drawer>
         <Box
           component="main"

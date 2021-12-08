@@ -36,7 +36,7 @@ const tiers = [
   {
     title: 'Free',
     price: '0',
-    walletUpgrade: '100',
+    walletUpgrade: 0,
     description: [
       '100$ signup rewards',
       'Valid for 3 months',
@@ -44,13 +44,12 @@ const tiers = [
       'Email support',
     ],
     buttonText: 'Sign up for free',
-    buttonVariant: 'outlined',
+    buttonVariant: 'contained',
   },
   {
     title: 'Pro',
-    subheader: 'Most popular',
     price: '15',
-    walletUpgrade: '200',
+    walletUpgrade: 15,
     description: [
       '100$ Signup rewards',
       '100$ Addtional wallet rewards',
@@ -58,12 +57,12 @@ const tiers = [
       'Priority email support',
     ],
     buttonText: 'Get started',
-    buttonVariant: 'contained',
+    buttonVariant: 'outlined',
   },
   {
     title: 'Enterprise',
     price: '30',
-    walletUpgrade: '300',
+    walletUpgrade: 30,
     description: [
       '100$ Signup rewards',
       '200$ Addtional wallet rewards',
@@ -110,7 +109,7 @@ function PricingContent() {
     console.log("walletUpgrade : ", walletUpgrade);
     const obj = {
       ...user,
-      walletBalance: walletUpgrade
+      walletBalance: user.walletBalance - walletUpgrade,
     }
     const response = await updateUserProfile(obj);
     console.log(response);
@@ -171,7 +170,7 @@ function PricingContent() {
               <Card>
                 <CardHeader
                   title={tier.title}
-                  subheader={tier.subheader}
+                  // subheader={tier.subheader}
                   titleTypographyProps={{ align: 'center' }}
                   action={tier.title === 'Pro' ? <StarIcon /> : null}
                   subheaderTypographyProps={{

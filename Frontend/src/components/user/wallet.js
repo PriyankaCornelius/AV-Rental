@@ -33,7 +33,7 @@ function Wallet(props) {
               Current balance
             </Typography>
             <Typography component="h2" variant="h2">
-              {user.walletBalance} $
+              {user.walletBalance > 0 ? user.walletBalance : 0} $
             </Typography>
             
           </CardContent>

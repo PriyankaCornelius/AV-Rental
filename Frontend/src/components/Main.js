@@ -13,6 +13,8 @@ import CarList from './car/CarList';
 import RideList from './ride/RideList';
 import PrivateRoute from './authenticaion/PrivateRoute';
 import AdminAnalysis from './integration/AdminAnalysis';
+import { BACKEND_URL } from '../services/constants';
+import { BACKEND_PORT } from '../services/constants';
 
 const Main = () => {
     const [user, setUser] = useState();
@@ -29,9 +31,11 @@ const Main = () => {
         const token = window.localStorage.getItem('token');
         const userObj = window.localStorage.getItem('user');
         const user = JSON.parse(userObj);
-        if(token){
+        if(token && token !== undefined){
+            console.log('TOKEN', token);
             setLoading(true);
-            const response = await fetch(`http://ec2-3-14-43-170.us-east-2.compute.amazonaws.com:5000/user/verifyToken/${token}`);
+            const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/user/verifyToken/${token}`);
+            console.log(response);
             if(response.state === 200){
                 setAuthState(response.state === 200);
                 setUser(user);
@@ -45,6 +49,7 @@ const Main = () => {
             }
         }
         else{
+            console.log('herer');
             // history.push('/login');
             setAuthState(false);
             setLoading(false);

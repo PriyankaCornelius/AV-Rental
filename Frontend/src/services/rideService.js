@@ -1,6 +1,5 @@
-import { ConstructionOutlined } from "@mui/icons-material";
-import { useContext } from "react";
-import { AuthContext } from "../components/authenticaion/ProvideAuth";
+import { BACKEND_URL } from "./constants";
+import { BACKEND_PORT } from "./constants";
 
 export const bookRide = async (ride, user) => {
     const {carId, source, destination, chargePerDay: charges} = ride;
@@ -23,7 +22,7 @@ export const bookRide = async (ride, user) => {
         headers:  {'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
     };
-    const response = await fetch('http://ec2-3-14-43-170.us-east-2.compute.amazonaws.com:5000/ride/addRide', options);
+    const response = await fetch('${BACKEND_URL}:${BACKEND_PORT}/ride/addRide', options);
     const status = response.status;
     const data = await response.json();
     return {status, data};
@@ -34,7 +33,7 @@ export const fechInProgressRides = async (userId, persona) => {
         method: 'GET',
         headers: {'Content-Type': 'application/json'},
     }
-    const response = await fetch(`http://ec2-3-14-43-170.us-east-2.compute.amazonaws.com:5000/ride/inProgress?userId=${userId}&persona=${persona}`, options);
+    const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/ride/inProgress?userId=${userId}&persona=${persona}`, options);
     const status = response.status;
     const data  = await response.json();
     return {status, data};
@@ -46,7 +45,7 @@ export const fetchRideListFromDB = async (customerId, persona) => {
         headers: {'Content-Type': 'application/json'},
     }
 
-    const response = await fetch(`http://ec2-3-14-43-170.us-east-2.compute.amazonaws.com:5000/ride/userRides?userId=${customerId}&persona=${persona}`, options);
+    const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/ride/userRides?userId=${customerId}&persona=${persona}`, options);
     const status = response.status;
     const data  = await response.json();
     console.log('Ride Service', data);
