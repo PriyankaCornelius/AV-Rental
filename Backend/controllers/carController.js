@@ -1,5 +1,5 @@
-import con from  '../index';
-import { sendCustomError, sendCustomSuccess, sendInternalServerError } from './common';
+import con from  '../index.js';
+import { sendCustomError, sendCustomSuccess, sendInternalServerError } from './common.js';
 
 export const addCar = (req, res) => {
     try{

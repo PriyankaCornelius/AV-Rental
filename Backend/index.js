@@ -3,9 +3,9 @@ import dotenv from 'dotenv'
 import { createConnection } from 'mysql';
 import express from 'express';
 
-import userRouter from './routes/userRoutes';
-import carRouter from  './routes/carRoutes';
-import rideRouter from './routes/rideRoutes';
+import userRouter from './routes/userRoutes.js';
+import carRouter from  './routes/carRoutes.js';
+import rideRouter from './routes/rideRoutes.js';
 
 dotenv.config();
 var app = express();

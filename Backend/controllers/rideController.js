@@ -1,5 +1,5 @@
-import { sendInternalServerError, sendCustomSuccess } from "./common";
-import con  from '../index';
+import { sendInternalServerError, sendCustomSuccess } from "./common.js";
+import con  from '../index.js';
 
 export const addRide = (req, res) => {
     try{

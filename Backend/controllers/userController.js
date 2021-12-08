@@ -1,8 +1,8 @@
-import con from "../index";
+import con from "../index.js";
 import pkg1 from 'bcryptjs';
 const { compare, genSalt, hash: _hash } = pkg1;
-import { createJWT, verifyToken } from "../services/userService";
-import { sendCustomSuccess, sendInternalServerError } from "./common";
+import { createJWT, verifyToken } from "../services/userService.js";
+import { sendCustomSuccess, sendInternalServerError } from "./common.js";
 
 export const signUp = async(req, res) => {
     var fname = req.body.firstName;
