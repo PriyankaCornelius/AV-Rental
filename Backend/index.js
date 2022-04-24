@@ -19,11 +19,11 @@ const corsConfig = {
 app.use(cors(corsConfig));
 
 var con = createConnection({
-  host: "rentalav.czvwggwmech2.us-east-2.rds.amazonaws.com",
+  host: "",
   port: 3306,
-  user: "admin",
-  password: "admin123",
-  database: "rentalAV"
+  user: "",
+  password: "",
+  database: ""
 });
 
 app.listen(process.env.PORT, () => {
